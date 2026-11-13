@@ -93,3 +93,12 @@ book:
   top_k: 5
   truncate_keep: end                         # full context drops passages from the start (evaluate_baselines direction)
   warmup_question: "Who is Sherlock Holmes's friend and chronicler?"
+
+# Demo 1b: the four methods on real PersonaMem-v2 test rows (make demo-pmv2). Fixed before any run:
+# rows = sorted(random.Random(seed).sample(range(5000), rows)) = [139, 684, 1067, 2374, 2512, 2933, 3106, 3471, 4342, 4849]
+pmv2_check:
+  checkpoint: pmv2
+  system_prompt: PERSONA_PROMPT      # same prompt for all four methods, as in Demo 1
+  seed: 23
+  rows: 10
+  top_k: 5

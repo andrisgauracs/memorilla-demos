@@ -5,7 +5,7 @@ SHELL := /bin/bash
 RUN = source scripts/env.sh && source .venv/bin/activate && python -m
 REPLAY_ARG = $(if $(REPLAY),--replay $(REPLAY),)
 
-.PHONY: setup check-gpu sanity demo-clue demo-speed demo-book
+.PHONY: setup check-gpu sanity demo-clue demo-pmv2 demo-speed demo-book
 
 setup:
 	bash scripts/setup.sh
@@ -18,6 +18,9 @@ sanity:
 
 demo-clue:
 	@$(RUN) demos.clue $(REPLAY_ARG) $(ARGS)
+
+demo-pmv2:
+	@$(RUN) demos.pmv2 $(REPLAY_ARG) $(ARGS)
 
 demo-speed:
 	@$(RUN) demos.speed $(REPLAY_ARG) $(ARGS)
