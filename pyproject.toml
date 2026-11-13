@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "memorilla-demos"
+version = "0.1.0"
+description = "Filmable, reproducible demos of Memorilla (latent semantic memory for LLMs)"
+requires-python = "==3.11.*"
+dependencies = [
+    # Upstream Memorilla at a fixed commit. It pins torch==2.7.0 and vllm==0.9.1; scripts/setup.sh installs that
+    # exact torch version from the CUDA 12.8 index first (see README, "Blackwell").
+    "memorilla @ git+https://github.com/snap-stanford/memorilla.git@d8f18891a50bf33c18f04fe5167c22f51e58c9cd",
+    "rich>=13.7",
+    "nvidia-ml-py>=12.560",
+    "pyyaml>=6.0",
+    "plotext==5.3.2",
+    "matplotlib>=3.8,<4",
+]
+
+[tool.setuptools.packages.find]
+include = ["demos*"]

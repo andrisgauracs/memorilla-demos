@@ -1,0 +1,71 @@
+{
+  "description": "Questions for Demo 3 (The Hound of the Baskervilles). Every answer was checked against data/hound/passages.json; 'evidence' lists the passage ids that state it. Rubrics are LLM-free: every all_of group needs at least one phrase present (case-insensitive substring).",
+  "questions": [
+    {
+      "id": "walking_stick",
+      "question": "In The Hound of the Baskervilles, who gave Dr. Mortimer the walking stick he left at Baker Street, according to its engraving?",
+      "answer": "His friends of the C.C.H. - Charing Cross Hospital (\"To James Mortimer, M.R.C.S., from his friends of the C.C.H.\").",
+      "chapters": [1],
+      "evidence": [1, 5],
+      "rubric": {"all_of": [["c.c.h", "charing cross"]]}
+    },
+    {
+      "id": "footprints",
+      "question": "What did Dr. Mortimer see on the ground near Sir Charles Baskerville's body that he did not mention at the inquest?",
+      "answer": "The footprints of a gigantic hound.",
+      "chapters": [2],
+      "evidence": [42],
+      "rubric": {"all_of": [["hound", "dog"], ["footprint", "print", "track", "mark"]]}
+    },
+    {
+      "id": "warning_note",
+      "question": "How was the anonymous warning note that Sir Henry received at his London hotel made?",
+      "answer": "From words cut out of a Times leading article and pasted onto the paper; only the word 'moor' was written in ink.",
+      "chapters": [4],
+      "evidence": [61, 62, 64, 66],
+      "rubric": {"all_of": [["times", "newspaper", "printed words", "cut out", "cut from", "pasted"]]}
+    },
+    {
+      "id": "convict",
+      "question": "Who is the escaped convict hiding on the moor, and how is he connected to the Barrymores?",
+      "answer": "Selden, the Notting Hill murderer; he is Mrs. Barrymore's younger brother.",
+      "chapters": [9],
+      "evidence": [197, 198, 199],
+      "rubric": {"all_of": [["selden"], ["brother"]]}
+    },
+    {
+      "id": "beryl",
+      "question": "What is the true relationship between Stapleton and the woman who lives with him as his sister?",
+      "answer": "She is his wife, posing as his sister.",
+      "chapters": [12],
+      "evidence": [269],
+      "rubric": {"all_of": [["wife", "married"]]}
+    },
+    {
+      "id": "glow",
+      "question": "What had been put on the hound to make it glow in the dark?",
+      "answer": "Phosphorus (a cunning preparation of it).",
+      "chapters": [14],
+      "evidence": [323],
+      "rubric": {"all_of": [["phosphor"]]}
+    },
+    {
+      "id": "letter_ll",
+      "question": "Who wrote the letter signed 'L. L.' that brought Sir Charles to the gate on the night he died, and who had persuaded her to write it?",
+      "answer": "Laura Lyons of Coombe Tracey wrote it (chapters 10-11); Stapleton had persuaded her, having promised to marry her (chapter 13).",
+      "chapters": [10, 11, 13],
+      "evidence": [222, 235, 306],
+      "needs_multiple_chapters": true,
+      "rubric": {"all_of": [["laura lyons", "mrs. lyons", "lyons"], ["stapleton"]]}
+    },
+    {
+      "id": "stapleton_identity",
+      "question": "Who is Stapleton really, and why did he want Sir Henry dead?",
+      "answer": "He is a Baskerville - the son of Rodger Baskerville, Sir Charles's younger brother - and wanted to inherit the Baskerville estate and title (portrait in chapter 13, Holmes's explanation in chapter 15).",
+      "chapters": [13, 15],
+      "evidence": [297, 340],
+      "needs_multiple_chapters": true,
+      "rubric": {"all_of": [["rodger", "son of", "nephew", "cousin", "is a baskerville", "a baskerville himself", "baskerville by birth", "related"], ["inherit", "estate", "heir", "succession", "title", "fortune", "next in line"]]}
+    }
+  ]
+}

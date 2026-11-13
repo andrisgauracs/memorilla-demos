@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "demo": "gpu_check",
+  "timestamp": "2026-11-13T16:40:36+00:00",
+  "hardware": {
+    "cpu": "Intel(R) Core(TM) Ultra 9 285K",
+    "ram_gib": 62.3,
+    "gpu": {
+      "name": "NVIDIA GeForce RTX 5090",
+      "memory_mib": 32607,
+      "driver": "595.99.02",
+      "compute_capability": "12.0"
+    }
+  },
+  "software": {
+    "python": "3.11.14",
+    "os": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39",
+    "torch": "2.7.0+cu128",
+    "torch_cuda": "12.8",
+    "vllm": "0.9.1",
+    "transformers": "4.53.3",
+    "xformers": "0.0.30",
+    "memorilla": "1.0.0",
+    "memorilla_commit": "d8f18891a50bf33c18f04fe5167c22f51e58c9cd",
+    "vllm_use_v1": null,
+    "vllm_attention_backend": null
+  },
+  "git": {
+    "commit": null,
+    "dirty": true
+  },
+  "checks": [
+    {
+      "check": "torch build has this GPU's arch",
+      "ok": true,
+      "detail": "torch 2.7.0+cu128 (CUDA 12.8) includes sm_120"
+    },
+    {
+      "check": "torch CUDA kernels",
+      "ok": true,
+      "detail": "bf16 matmul/softmax ok (1023.9), SDPA ok (1, 8, 128, 128)"
+    },
+    {
+      "check": "vLLM compiled ops (_C)",
+      "ok": false,
+      "detail": "RuntimeError: CUDA error: no kernel image is available for execution on the device\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable",
+      "traceback": "Traceback (most recent call last):\n  File \"~/memorilla-demos/demos/check_gpu.py\", line 31, in run_one\n    print(MARKER + json.dumps({\"ok\": True, \"detail\": fn()}), flush=True)\n                                                     ^^^^\n  File \"~/memorilla-demos/demos/check_gpu.py\", line 76, in vllm_custom_ops\n    ref = x.float() * torch.rsqrt(x.float().pow(2).mean(-1, keepdim=True) + 1e-6)\n          ^^^^^^^^^\nRuntimeError: CUDA error: no kernel image is available for execution on the device\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n\n"
+    },
+    {
+      "check": "vLLM FlashAttention",
+      "ok": false,
+      "detail": "RuntimeError: CUDA error: no kernel image is available for execution on the device\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable",
+      "traceback": "Traceback (most recent call last):\n  File \"~/memorilla-demos/demos/check_gpu.py\", line 31, in run_one\n    print(MARKER + json.dumps({\"ok\": True, \"detail\": fn()}), flush=True)\n                                                     ^^^^\n  File \"~/memorilla-demos/demos/check_gpu.py\", line 87, in vllm_flash_attn\n    out = flash_attn_varlen_func(q, k, v, max_seqlen_q=64, cu_seqlens_q=cu, max_seqlen_k=64, cu_seqlens_k=cu,\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"~/memorilla-demos/.venv/lib/python3.11/site-packages/vllm/vllm_flash_attn/flash_attn_interface.py\", line 227, in flash_attn_varlen_func\n    out, softmax_lse = torch.ops._vllm_fa2_C.varlen_fwd(\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"~/memorilla-demos/.venv/lib/python3.11/site-packages/torch/_ops.py\", line 1158, in __call__\n    return self._op(*args, **(kwargs or {}))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: CUDA error: no kernel image is available for execution on the device\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n\n"
+    },
+    {
+      "check": "xFormers attention",
+      "ok": false,
+      "detail": "process aborted (exit 1): CUDA error (/__w/xformers/xformers/third_party/flash-attention/hopper/flash_fwd_launch_template.h:175): no kernel image is available for execution on the device",
+      "stderr_tail": "CUDA error (/__w/xformers/xformers/third_party/flash-attention/hopper/flash_fwd_launch_template.h:175): no kernel image is available for execution on the device\n"
+    },
+    {
+      "check": "Triton JIT",
+      "ok": true,
+      "detail": "triton 3.3.0 JIT kernel ok"
+    }
+  ]
+}

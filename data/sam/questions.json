@@ -1,0 +1,60 @@
+{
+  "description": "Test questions for 'The Buried Clue'. Rubrics are LLM-free: an answer passes when every all_of group has at least one phrase present (case-insensitive substring) and no none_of phrase appears. Chat numbers are 1-based positions in chats.json.",
+  "questions": [
+    {
+      "id": "getaway",
+      "kind": "buried_clue",
+      "question": "Plan me a weekend getaway from Toronto.",
+      "clue_chat": 23,
+      "clue_summary": "Sam's dog Biscuit panics and gets carsick on any car ride longer than ~20 minutes.",
+      "good_answer": "Takes the dog into account: avoids a long drive, or suggests the train or a pet sitter.",
+      "rubric": {
+        "all_of": [
+          ["biscuit", "dog", "pup", "pet"],
+          ["train", "via rail", "go transit", "sitter", "boarding", "kennel", "carsick", "car sick", "car-sick", "motion sick", "short drive", "long drive", "long car", "20 minutes", "20-minute", "close to home", "nearby"]
+        ]
+      }
+    },
+    {
+      "id": "parents_dinner",
+      "kind": "buried_clue",
+      "question": "What should I cook for my parents this Sunday?",
+      "clue_chat": 88,
+      "clue_summary": "Sam has been vegan for years (mentioned only while asking about leather-jacket alternatives).",
+      "good_answer": "Suggests a vegan menu.",
+      "rubric": {
+        "all_of": [
+          ["vegan", "plant-based", "plant based"]
+        ]
+      }
+    },
+    {
+      "id": "gym_time",
+      "kind": "buried_clue",
+      "question": "When's the best time for me to go to the gym?",
+      "clue_chat": 131,
+      "clue_summary": "Sam's bakery shift starts at 3 a.m. every weekday.",
+      "good_answer": "Works around the early shift: late morning or early afternoon, after the shift.",
+      "rubric": {
+        "all_of": [
+          ["shift", "bakery", "3 a.m", "3 am", "3am", "3:00 a", "baking"],
+          ["late morning", "midday", "mid-day", "noon", "early afternoon", "afternoon", "after your shift", "after work", "10 a.m", "10 am", "11 a.m", "11 am", "1 p.m", "1 pm", "2 p.m", "2 pm"]
+        ]
+      }
+    },
+    {
+      "id": "control",
+      "kind": "control",
+      "question": "What's my sister's name, and when is her birthday?",
+      "clue_chat": 57,
+      "clue_summary": "Stated plainly in one chat: Sam's sister Priya's birthday is on March 14.",
+      "good_answer": "Priya, March 14.",
+      "rubric": {
+        "all_of": [
+          ["priya"],
+          ["march 14", "14 march", "14th of march", "march 14th"]
+        ]
+      }
+    }
+  ]
+}

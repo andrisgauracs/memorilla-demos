@@ -1,0 +1,95 @@
+# One config file for every demo. The same code runs on the RTX 5090 homelab and on a rented H100:
+# only the active profile changes. Pick it with `profile:` below, `PROFILE=h100 make ...`, or `--profile h100`.
+# Any value can be overridden for one run with `--set key.sub=value`, e.g. `--set decoder.max_model_len=16384`.
+
+profile: auto            # auto picks by GPU name (5090 -> rtx5090, H100 -> h100); or name a profile explicitly
+seed: 23                 # memorilla.utils.DEFAULT_SEED
+
+# Every download is pinned to an exact Hub commit, so a re-run months later sees the same weights and data.
+models:
+  decoder:   {repo: Qwen/Qwen3-8B,                 revision: b968826d9c46dd6066d109eabc6255188de91218}
+  encoder:   {repo: Qwen/Qwen3-Embedding-4B,       revision: 5cf2132abc99cad020ac570b19d031efec650f2b}
+  memorilla: {repo: memorilla/Memorilla-Qwen3-8B,  revision: f6b15af56aa687861c8d2d03b1cd8f7979881361}
+datasets:
+  memorilla_data: {repo: memorilla/Memorilla-Data, revision: c6b0d7eea65659254115ed31dd26869eb6dc0586}
+
+paths:                   # relative to the repo root
+  memorilla_data: .cache/memorilla-data
+  model_cache: null      # null = default Hugging Face cache (~/.cache/huggingface); never printed on screen
+  results: results
+  logs: logs
+
+generation:
+  max_new_tokens: 256    # the pmv2 benchmark's budget in memorilla/benchmarks.py
+  temperature: 0.0       # greedy everywhere
+
+display:
+  width: 120             # columns the layout is designed for (16:9 terminal, ~120x35)
+  panel_chars: 520       # answer characters shown per panel in the 2x2 layouts (full text is always in results/)
+  replay_speed: 1.0      # --replay waits the recorded latency x this factor before showing each answer (0 = instant)
+
+# Engine budgets. gpu_memory_utilization is vLLM's per-engine share of the whole card; the two engines live in one
+# process, so their shares plus ~2 GiB of extras (CUDA context, the decoder's standalone embedding matrix, the memory
+# module) must stay under 1.0.
+profiles:
+  rtx5090:               # 32 GB. Upstream defaults (encoder 0.25, decoder 0.6) leave the encoder no room for KV cache.
+    encoder:
+      gpu_memory_utilization: 0.30   # 4B bf16 weights are ~7.5 GiB; the rest is activations + KV for short docs
+      max_model_len: 4096            # docs are one chat / one ~250-token passage; the 40K default needs ~6 GiB of KV
+      engine_extra: {}
+    decoder:
+      gpu_memory_utilization: 0.58   # 8B bf16 weights are ~15.3 GiB
+      max_model_len: 8192            # memorilla's own pmv2 eval length; raise per demo once the fit is measured
+      engine_extra: {}               # e.g. {enforce_eager: true} saves the CUDA-graph memory if the fit is tight
+    attention_backend: null          # null = vLLM's choice; set e.g. XFORMERS if FLASH_ATTN fails on sm_120
+  h100:                  # 80 GB, the paper's hardware. Same two-engine layout as MemoryVLLM.from_pretrained's defaults.
+    encoder:
+      gpu_memory_utilization: 0.25
+      max_model_len: 4096
+      engine_extra: {}
+    decoder:
+      gpu_memory_utilization: 0.60
+      max_model_len: 40960           # Qwen3-8B's native window (config max_position_embeddings); upstream's pmv2
+      engine_extra: {}               # full-context baseline uses the same 40,960
+    attention_backend: null
+
+# Step 0: the README's own example.
+sanity:
+  checkpoint: pmv2
+  config: pmv2
+  split: test
+  row: 73
+  system_prompt: PERSONA_PROMPT      # name of a constant in memorilla.benchmarks
+  rubric:                            # LLM-free pass/fail: every group needs at least one match (case-insensitive)
+    all_of: [["diabet"]]
+
+# Demo 1: The Buried Clue (make demo-clue). Data: data/sam/chats.json + data/sam/questions.json.
+clue:
+  checkpoint: pmv2
+  system_prompt: PERSONA_PROMPT      # the same prompt for all four methods (Memorilla appends its memory slots)
+  top_k: 5
+  warmup_question: "Any tips for keeping a houseplant alive?"   # not scored or shown; warms every code path once
+
+# Demo 2: the speed race (make demo-speed). Corpus: data/speed/passages.json (512 x 250 tokens).
+speed:
+  checkpoint: stage3
+  system_prompt: PERSONA_PROMPT
+  question: "Why does Dr. Mortimer come to see Sherlock Holmes, and what is he afraid of?"
+  sizes: [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+  max_new_tokens: 32                 # paper, Table 14
+  warmup_runs: 1
+  timed_runs: 3
+  native_window: 32768               # paper section 3.3: the decoder context the serving stack enforces...
+  yarn_window: 131072                # ...and YaRN x4 above it (memorilla.benchmarks narrativeqa protocol)
+  yarn_factor: 4.0
+  full_context_gpu_memory_utilization: 0.85   # evaluate_baselines.BASELINE_GPU_MEMORY_UTILIZATION
+
+# Demo 3: The Hound of the Baskervilles (make demo-book). Data: data/hound/passages.json + data/hound/questions.json.
+book:
+  checkpoint: stage3
+  memorilla_system_prompt: PERSONA_PROMPT    # memorilla.benchmarks narrativeqa: Memorilla's system prompt
+  baseline_system_prompt: BRIEF_ANSWER_PROMPT  # ...and the text-only baselines' prompt in the same protocol
+  max_new_tokens: 64                         # narrativeqa baseline budget (Memorilla's own eval uses 32)
+  top_k: 5
+  truncate_keep: end                         # full context drops passages from the start (evaluate_baselines direction)
+  warmup_question: "Who is Sherlock Holmes's friend and chronicler?"

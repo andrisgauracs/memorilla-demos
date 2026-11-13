@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "demo": "sanity",
+  "timestamp": "2026-11-13T20:42:13+00:00",
+  "config": {
+    "profile": "h100",
+    "seed": 23,
+    "models": {
+      "decoder": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      },
+      "encoder": {
+        "repo": "Qwen/Qwen3-Embedding-4B",
+        "revision": "5cf2132abc99cad020ac570b19d031efec650f2b"
+      },
+      "memorilla": {
+        "repo": "memorilla/Memorilla-Qwen3-8B",
+        "revision": "f6b15af56aa687861c8d2d03b1cd8f7979881361"
+      }
+    },
+    "datasets": {
+      "memorilla_data": {
+        "repo": "memorilla/Memorilla-Data",
+        "revision": "c6b0d7eea65659254115ed31dd26869eb6dc0586"
+      }
+    },
+    "paths": {
+      "memorilla_data": ".cache/memorilla-data",
+      "model_cache": null,
+      "results": "results",
+      "logs": "logs"
+    },
+    "generation": {
+      "max_new_tokens": 256,
+      "temperature": 0.0
+    },
+    "display": {
+      "width": 120,
+      "panel_chars": 520,
+      "replay_speed": 1.0
+    },
+    "sanity": {
+      "checkpoint": "pmv2",
+      "config": "pmv2",
+      "split": "test",
+      "row": 73,
+      "system_prompt": "PERSONA_PROMPT",
+      "rubric": {
+        "all_of": [
+          [
+            "diabet"
+          ]
+        ]
+      }
+    },
+    "clue": {
+      "checkpoint": "pmv2",
+      "system_prompt": "PERSONA_PROMPT",
+      "top_k": 5,
+      "warmup_question": "Any tips for keeping a houseplant alive?"
+    },
+    "speed": {
+      "checkpoint": "stage3",
+      "system_prompt": "PERSONA_PROMPT",
+      "question": "Why does Dr. Mortimer come to see Sherlock Holmes, and what is he afraid of?",
+      "sizes": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128,
+        256,
+        512
+      ],
+      "max_new_tokens": 32,
+      "warmup_runs": 1,
+      "timed_runs": 3,
+      "native_window": 32768,
+      "yarn_window": 131072,
+      "yarn_factor": 4.0,
+      "full_context_gpu_memory_utilization": 0.85
+    },
+    "book": {
+      "checkpoint": "stage3",
+      "memorilla_system_prompt": "PERSONA_PROMPT",
+      "baseline_system_prompt": "BRIEF_ANSWER_PROMPT",
+      "max_new_tokens": 64,
+      "top_k": 5,
+      "truncate_keep": "end",
+      "warmup_question": "Who is Sherlock Holmes's friend and chronicler?"
+    },
+    "encoder": {
+      "gpu_memory_utilization": 0.25,
+      "max_model_len": 4096,
+      "engine_extra": {}
+    },
+    "decoder": {
+      "gpu_memory_utilization": 0.6,
+      "max_model_len": 40960,
+      "engine_extra": {}
+    },
+    "attention_backend": null
+  },
+  "hardware": {
+    "cpu": "Intel(R) Xeon(R) Platinum 8352Y CPU @ 2.20GHz",
+    "ram_gib": 125.9,
+    "gpu": {
+      "name": "NVIDIA H100 PCIe",
+      "memory_mib": 81559,
+      "driver": "580.126.09",
+      "compute_capability": "9.0"
+    }
+  },
+  "software": {
+    "python": "3.11.14",
+    "os": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+    "torch": "2.7.0+cu128",
+    "torch_cuda": "12.8",
+    "vllm": "0.9.1",
+    "transformers": "4.53.3",
+    "xformers": "0.0.30",
+    "memorilla": "1.0.0",
+    "memorilla_commit": "d8f18891a50bf33c18f04fe5167c22f51e58c9cd",
+    "vllm_use_v1": "0",
+    "vllm_attention_backend": null
+  },
+  "git": {
+    "commit": null,
+    "dirty": true
+  },
+  "load": {
+    "stages_s": {
+      "files": 0.22,
+      "memory_module": 1.72,
+      "encoder": 22.07,
+      "decoder": 59.41
+    },
+    "checkpoint": "pmv2",
+    "num_memories": 16,
+    "kv_cache_tokens": {
+      "decoder": 223968,
+      "encoder": null
+    }
+  },
+  "inputs": {
+    "dataset": "pmv2",
+    "split": "test",
+    "row": 73,
+    "question": "What are some easy breakfast ideas that will keep me full all morning?",
+    "reference_answer": "Since you’re mindful about your family’s history with type 2 diabetes, a hearty but balanced breakfast could be something like scrambled eggs with sautéed vegetables, a slice of whole-grain toast, and a side of fresh berries. The protein, fiber, and healthy carbs can help keep your blood sugar steady while keeping you full until lunch.",
+    "num_documents": 107,
+    "document_tokens": 32143,
+    "clue_index": 100,
+    "clue_excerpt": "Does a person’s maternal side influence their chances of developing type 2 diabetes differ…"
+  },
+  "methods": {
+    "none": {
+      "answer": "Here are some easy and satisfying breakfast ideas that can help keep you full all morning:\n\n### 1. **Greek Yogurt with Fruit and Granola**\n- **Why it works**: High in protein and fiber, which help you feel full longer.\n- **How to make it**: Mix plain Greek yogurt with fresh berries, a handful of granola, and a drizzle of honey.\n\n### 2. **Oatmeal with Nuts and Seeds**\n- **Why it works**: Oats are high in fiber, and nuts and seeds add healthy fats and protein.\n- **How to make it**: Cook rolled oats with water or milk, then top with sliced almonds, chia seeds, and a banana.\n\n### 3. **Scrambled Eggs with Whole Grain Toast**\n- **Why it works**: Eggs are a great source of protein, and whole grain toast adds fiber.\n- **How to make it**: Whisk eggs, scramble them in a pan, and serve with a slice of whole grain toast.\n\n### 4. **Smoothie with Protein and Greens**\n- **Why it works**: A smoothie can be packed with nutrients and protein to keep you full.\n- **How to make it**: Blend spinach, a banana, a scoop of protein",
+      "prompt_tokens": 52,
+      "output_tokens": 256,
+      "latency_s": 2.7835,
+      "input_mode": "token_ids",
+      "rubric": {
+        "pass": false,
+        "matched": [],
+        "missing": [
+          [
+            "diabet"
+          ]
+        ],
+        "forbidden": []
+      },
+      "warmup_latency_s": 2.7966,
+      "same_as_warmup": true
+    },
+    "memorilla": {
+      "answer": "Since you’ve got a family history of type 2 diabetes, you might enjoy breakfasts that balance protein, healthy fats, and fiber to keep you full without spiking blood sugar—like scrambled eggs with avocado and a side of roasted veggies, or Greek yogurt with chia seeds and fresh berries. These options give you steady energy while keeping your blood sugar in check.",
+      "prompt_tokens": 70,
+      "memory_tokens": 16,
+      "output_tokens": 74,
+      "embed_s": 1.1735,
+      "generate_s": 0.8867,
+      "latency_s": 2.0602,
+      "rubric": {
+        "pass": true,
+        "matched": [
+          "diabet"
+        ],
+        "missing": [],
+        "forbidden": []
+      },
+      "warmup_latency_s": 1.8581,
+      "same_as_warmup": true
+    }
+  },
+  "checks": {
+    "mirror_matches_model_answer": true,
+    "model_answer": "Since you’ve got a family history of type 2 diabetes, you might enjoy breakfasts that balance protein, healthy fats, and fiber to keep you full without spiking blood sugar—like scrambled eggs with avocado and a side of roasted veggies, or Greek yogurt with chia seeds and fresh berries. These options give you steady energy while keeping your blood sugar in check."
+  },
+  "vram": {
+    "total_mib": 81559,
+    "baseline_used_mib": 480,
+    "peak_used_mib": 61217,
+    "peak_demo_mib": 60737,
+    "other_processes_mib": 0
+  }
+}
