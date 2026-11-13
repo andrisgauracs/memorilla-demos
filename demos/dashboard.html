@@ -5,74 +5,96 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Memorilla demos</title>
 <style>
+/* Research-notebook look: graph paper, ink, index cards, rubber stamps, a teletype log tape. System fonts only. */
 :root {
-  --bg: #0d1117; --panel: #161b22; --line: #30363d; --text: #e6edf3; --dim: #8b949e;
-  --memorilla: #e056fd; --rag: #39c5cf; --full: #f5c542; --none: #b1bac4;
-  --ok: #3fb950; --bad: #f85149; --hl: #2ea04366;
+  --paper: #f2ede1; --paper-2: #e9e2d2; --ink: #1d1b17; --ink-2: #4a463d; --dim: #7a7365; --rule: #d7cfbd; --grid: #e3dccb;
+  --memorilla: #8e2a8a; --rag: #0f6e6a; --full: #a35d07; --none: #57534a;
+  --ok: #1d7a3a; --bad: #b3261e; --hl: #ffe45c;
+  --serif: "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --mono: "SF Mono", ui-monospace, Menlo, "JetBrains Mono", Consolas, monospace;
+  --sans: "Avenir Next", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
-  font: 20px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-.mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
-#app { display: flex; flex-direction: column; height: 100vh; padding: 28px 36px 18px; gap: 16px; max-width: 1920px; margin: 0 auto; }
-header { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
-h1 { margin: 0; font-size: 34px; color: var(--memorilla); letter-spacing: .2px; }
-.sub { color: var(--dim); font-size: 19px; }
+html, body { margin: 0; height: 100%; color: var(--ink); font: 19px/1.5 var(--sans);
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px; }
+.mono { font-family: var(--mono); }
+#app { display: flex; flex-direction: column; height: 100vh; padding: 26px 40px 18px; gap: 16px; max-width: 1920px; margin: 0 auto; }
+header { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; border-bottom: 3px double var(--ink); padding-bottom: 10px; }
+h1 { margin: 0; font: 700 38px/1.1 var(--serif); letter-spacing: -.3px; }
+h1::before { content: "§ "; color: var(--memorilla); }
+.sub { color: var(--ink-2); font-size: 17px; }
+.sub b { font-family: var(--mono); font-weight: 700; }
 .right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
-.badge { border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; font-size: 15px; color: var(--dim); }
-.badge.live { color: var(--ok); border-color: #2ea04366; }
-.badge.live::before { content: "● "; }
-.dots { display: flex; gap: 8px; }
-.dots span { width: 12px; height: 12px; border-radius: 50%; background: var(--line); }
-.dots span.on { background: var(--text); } .dots span.cur { outline: 2px solid var(--memorilla); outline-offset: 2px; }
-.question { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 22px; font-size: 30px; font-weight: 600; }
-.question small { display: block; font-size: 16px; font-weight: 400; color: var(--dim); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
-.grid { flex: 1; display: grid; gap: 16px; min-height: 0; }
+.badge { font: 700 13px/1 var(--mono); letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-2);
+  border: 2px solid var(--ink-2); padding: 6px 10px; transform: rotate(-1.5deg); }
+.badge.live { color: var(--bad); border-color: var(--bad); }
+.badge.live::before { content: "● "; animation: blink 1.4s infinite; }
+@keyframes blink { 50% { opacity: .2; } }
+.dots { display: flex; gap: 6px; }
+.dots span { width: 22px; height: 6px; background: var(--rule); }
+.dots span.on { background: var(--ink); } .dots span.cur { background: var(--memorilla); }
+.counter { font: 700 16px var(--mono); color: var(--ink-2); letter-spacing: 1px; }
+.question { background: #fffdf7; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); padding: 14px 24px 16px;
+  font: 600 32px/1.25 var(--serif); }
+.question small { display: block; font: 700 13px/1 var(--mono); color: var(--dim); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; }
+.grid { flex: 1; display: grid; gap: 22px 26px; min-height: 0; padding: 4px 6px 6px 0; }
 .grid.c2 { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
-.card { background: var(--panel); border: 1px solid var(--line); border-top: 4px solid var(--c); border-radius: 14px;
+.card { position: relative; background: #fffdf7; border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--c);
   display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
-.card .head { display: flex; align-items: center; gap: 12px; padding: 12px 18px 6px; }
-.card .name { font-weight: 700; color: var(--c); font-size: 22px; }
-.chips { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-.chip { font-size: 16px; color: var(--dim); background: #0d111799; border: 1px solid var(--line); border-radius: 8px; padding: 2px 9px; }
-.mark { font-size: 24px; font-weight: 800; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; }
-.mark.ok { color: var(--bg); background: var(--ok); } .mark.bad { color: var(--bg); background: var(--bad); }
-.note { padding: 0 18px; font-size: 16px; color: var(--dim); }
-.note .hit { color: var(--ok); font-weight: 700; } .note .miss { color: var(--bad); font-weight: 700; } .note .clue { color: var(--ok); font-weight: 700; }
-.answer { padding: 8px 18px 14px; overflow: hidden; position: relative; flex: 1; font-size: 19px; }
-.answer::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 40px; background: linear-gradient(transparent, var(--panel)); }
-.answer mark { background: var(--hl); color: var(--text); border-radius: 4px; padding: 0 2px; }
-.thinking { color: var(--dim); padding: 18px; font-size: 20px; }
-.thinking i { display: inline-block; width: 9px; height: 9px; margin-left: 4px; border-radius: 50%; background: var(--c); animation: b 1.2s infinite; }
+.card .head { display: flex; align-items: center; gap: 12px; padding: 0 14px 0 0; border-bottom: 1px dashed var(--rule); min-height: 46px; }
+.card .name { font: 700 15px/1 var(--mono); letter-spacing: 1.2px; text-transform: uppercase; color: #fffdf7; background: var(--c);
+  padding: 9px 14px; align-self: stretch; display: flex; align-items: center; }
+.chips { margin-left: auto; display: flex; gap: 14px; align-items: center; }
+.meter { display: flex; flex-direction: column; gap: 3px; width: 190px; }
+.meter .bar { height: 7px; background: var(--paper-2); border: 1px solid var(--rule); }
+.meter .bar i { display: block; height: 100%; min-width: 3px; background: var(--c); }
+.meter span { font: 600 13px/1 var(--mono); color: var(--ink-2); }
+.time { font: 700 17px/1 var(--mono); color: var(--ink); }
+.stamp { font: 800 15px/1 var(--mono); letter-spacing: 2px; padding: 5px 8px; border: 3px solid currentColor; transform: rotate(-6deg);
+  opacity: .9; mix-blend-mode: multiply; }
+.stamp.ok { color: var(--ok); } .stamp.bad { color: var(--bad); }
+.note { padding: 8px 16px 0; font: 14px/1.4 var(--mono); color: var(--dim); }
+.note .hit, .note .clue { color: var(--ok); font-weight: 700; } .note .miss { color: var(--bad); font-weight: 700; }
+.answer { padding: 8px 16px 14px; overflow: hidden; position: relative; flex: 1; font: 19px/1.5 var(--serif); }
+.answer::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 44px; background: linear-gradient(transparent, #fffdf7); }
+.answer mark { background: linear-gradient(100deg, transparent 2%, var(--hl) 4%, var(--hl) 96%, transparent 98%); color: var(--ink); padding: 0 3px; }
+.thinking { color: var(--dim); padding: 18px 16px; font: 16px var(--mono); letter-spacing: 1px; }
+.thinking i { display: inline-block; width: 10px; height: 3px; margin-left: 5px; background: var(--c); animation: b 1.2s infinite; }
 .thinking i:nth-child(2) { animation-delay: .2s; } .thinking i:nth-child(3) { animation-delay: .4s; }
-@keyframes b { 0%, 80%, 100% { opacity: .2; } 40% { opacity: 1; } }
-footer { display: flex; gap: 16px; color: var(--dim); font-size: 16px; flex-wrap: wrap; }
-.reveal { color: var(--text); font-size: 18px; font-style: italic; }
-table { border-collapse: collapse; width: 100%; font-size: 20px; }
-th, td { padding: 9px 14px; border-bottom: 1px solid var(--line); text-align: center; }
+@keyframes b { 0%, 80%, 100% { opacity: .15; } 40% { opacity: 1; } }
+footer { display: flex; gap: 16px; color: var(--dim); font: 14px var(--mono); flex-wrap: wrap; align-items: baseline; }
+.reveal { color: var(--ink); font: italic 19px var(--serif); border-left: 4px solid var(--hl); padding-left: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 19px; }
+th, td { padding: 10px 14px; border-bottom: 1px solid var(--rule); text-align: center; }
 th:first-child, td:first-child { text-align: left; }
-th { color: var(--dim); font-weight: 600; }
-tr.total td { font-weight: 800; font-size: 24px; border-top: 2px solid var(--line); }
-.summary { flex: 1; overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 10px 18px; }
-.speed { flex: 1; display: grid; grid-template-columns: 1fr 520px; gap: 16px; min-height: 0; }
-.speed td, .speed th { padding: 6px 10px; white-space: nowrap; font-size: 19px; }
-.speed svg { width: 100%; height: 100%; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
-.legend { display: flex; gap: 24px; font-size: 18px; }
-.legend b { display: inline-block; width: 28px; height: 5px; border-radius: 3px; vertical-align: middle; margin-right: 8px; }
-.empty { margin: auto; color: var(--dim); font-size: 24px; text-align: center; }
-.logs { background: #010409; border: 1px solid var(--line); border-radius: 12px; padding: 8px 14px; height: 168px;
+td:first-child { font-family: var(--serif); font-size: 20px; }
+th { font: 700 14px var(--mono); letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 2px solid var(--ink); }
+tr.total td { font: 800 26px var(--mono); border-top: 2px solid var(--ink); border-bottom: 3px double var(--ink); }
+.summary { flex: 1; overflow: auto; background: #fffdf7; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); padding: 8px 20px; }
+.speed { flex: 1; display: grid; grid-template-columns: 1fr 520px; gap: 26px; min-height: 0; padding-right: 6px; }
+.speed td, .speed th { padding: 6px 10px; white-space: nowrap; font: 18px var(--mono); }
+.speed th { font-size: 13px; }
+.speed svg { width: 100%; height: 100%; background: #fffdf7; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+.legend { display: flex; gap: 26px; font: 15px var(--mono); color: var(--ink-2); }
+.legend b { display: inline-block; width: 30px; height: 5px; vertical-align: middle; margin-right: 8px; }
+.empty { margin: auto; color: var(--ink-2); font: 26px var(--serif); text-align: center; }
+.logs { background: #1c1a16; color: #cfc6ad; border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--ink-2); padding: 8px 16px; height: 156px;
   overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; flex: none;
-  font: 14px/1.45 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #8b949e; white-space: pre; }
-.logs.big { flex: 1; height: auto; font-size: 16px; }
-.logs .w { color: #d29922; } .logs .e { color: var(--bad); } .logs .i b { color: #58a6ff; font-weight: 400; }
-.loading { display: flex; flex-direction: column; gap: 16px; flex: 1; min-height: 0; }
-.loading .title { font-size: 34px; font-weight: 700; } .loading .title span { color: var(--memorilla); }
+  font: 13.5px/1.45 var(--mono); white-space: pre; position: relative; }
+.logs::before { content: "ENGINE LOG"; position: absolute; top: 6px; right: 12px; font: 700 11px var(--mono); letter-spacing: 2px; color: #8a8270; }
+.logs.big { flex: 1; height: auto; font-size: 15px; }
+.logs .w { color: #e0a43a; } .logs .e { color: #ff7a6b; } .logs .i b { color: #9ccfd8; font-weight: 400; }
+.loading { display: flex; flex-direction: column; gap: 14px; flex: 1; min-height: 0; }
+.loading .title { font: 700 40px var(--serif); } .loading .title span { font-family: var(--mono); color: var(--memorilla); }
 .controls { display: flex; gap: 8px; margin-left: auto; }
-.btn { font: 600 15px/1 ui-sans-serif, system-ui, sans-serif; color: var(--dim); background: var(--panel); border: 1px solid var(--line);
-  border-radius: 8px; padding: 7px 12px; cursor: pointer; }
-.btn:hover { color: var(--text); border-color: #8b949e; }
-.btn.on { color: var(--text); border-color: var(--memorilla); }
-.btn:disabled { opacity: .35; cursor: default; }
+.btn { font: 700 13px/1 var(--mono); letter-spacing: 1px; text-transform: uppercase; color: var(--ink); background: #fffdf7;
+  border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); padding: 8px 12px; cursor: pointer; }
+.btn:hover { background: var(--paper-2); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.btn.on { background: var(--ink); color: #fffdf7; }
+.btn:disabled { opacity: .3; cursor: default; box-shadow: none; }
 </style>
 </head>
 <body>
@@ -110,8 +132,10 @@ function card(key, title, result, note) {
   if (!result) return `<div class="card" style="--c:${c}"><div class="head"><span class="name">${esc(title)}</span></div>
     <div class="thinking">thinking<i></i><i></i><i></i></div></div>`;
   const ok = result.rubric && result.rubric.pass;
-  const chips = `<span class="chip mono">${fmtN(result.prompt_tokens)} tokens in</span><span class="chip mono">${fmtS(result.latency_s)}</span>
-    <span class="mark ${ok ? "ok" : "bad"}">${ok ? "✓" : "✗"}</span>`;
+  // linear against the model's context window, so the bars show the true proportion (a 69-token prompt is a sliver)
+  const width = Math.min(100, 100 * result.prompt_tokens / METER_MAX);
+  const chips = `<span class="meter" title="share of the ${fmtN(METER_MAX)}-token context window"><span>${fmtN(result.prompt_tokens)} tokens in</span><span class="bar"><i style="width:${width.toFixed(1)}%"></i></span></span>
+    <span class="time">${fmtS(result.latency_s)}</span><span class="stamp ${ok ? "ok" : "bad"}">${ok ? "PASS" : "FAIL"}</span>`;
   const body = result.error ? `<span style="color:var(--bad)">${esc(result.error)}</span>`
     : richText(result.answer, (result.rubric || {}).matched);
   return `<div class="card" style="--c:${c}"><div class="head"><span class="name">${esc(title)}</span><span class="chips">${chips}</span></div>
@@ -218,7 +242,7 @@ function renderBoard(d) {
   const dots = Array.from({ length: n }, (_, k) => `<span class="${k < have ? "on" : ""} ${k === i ? "cur" : ""}"></span>`).join("");
   const slots = SLOTS[d.demo];
   const allIn = slots.every(([k]) => answers[k]);
-  return `${header(d, sub)}<div style="display:flex;gap:16px;align-items:center"><span class="sub">${i + 1} of ${n}</span><div class="dots">${dots}</div>${controls("board", i, have)}</div>
+  return `${header(d, sub)}<div style="display:flex;gap:16px;align-items:center"><span class="counter">Nº ${i + 1} / ${n}</span><div class="dots">${dots}</div>${controls("board", i, have)}</div>
     <div class="question"><small>${esc(small)}</small>${esc(qtext)}</div>
     <div class="grid c2">${slots.map(([k, t]) => card(k, t, answers[k], noteFor(d, i, k, answers[k]))).join("")}</div>
     ${LOGS()}<footer>${allIn ? `<span class="reveal">${reveal}</span>` : ""}<span style="margin-left:auto">${footerHtml(d)}</span></footer>`;
@@ -227,7 +251,7 @@ function renderBoard(d) {
 function renderSummary(d) {
   const slots = SLOTS[d.demo], rows = d.answers || [];
   const label = (k) => d.demo === "pmv2" ? `${d.rows[k].row}: ${esc(d.rows[k].question.slice(0, 70))}…` : esc(d.questions[k].question) + (d.questions[k].kind === "control" ? ` <span style="color:var(--full)">(control)</span>` : "");
-  const body = rows.map((a, k) => `<tr><td>${label(k)}</td>${slots.map(([s]) => a[s] ? `<td><span class="mark ${a[s].rubric.pass ? "ok" : "bad"}" style="display:inline-grid;width:28px;height:28px;font-size:18px">${a[s].rubric.pass ? "✓" : "✗"}</span> <span class="mono sub">${fmtS(a[s].latency_s)}</span></td>` : "<td></td>").join("")}</tr>`).join("");
+  const body = rows.map((a, k) => `<tr><td>${label(k)}</td>${slots.map(([s]) => a[s] ? `<td><span class="stamp ${a[s].rubric.pass ? "ok" : "bad"}" style="display:inline-block;font-size:12px;padding:3px 6px">${a[s].rubric.pass ? "PASS" : "FAIL"}</span> <span class="mono sub">${fmtS(a[s].latency_s)}</span></td>` : "<td></td>").join("")}</tr>`).join("");
   const total = slots.map(([s]) => `<td style="color:var(--${s})">${rows.filter(a => a[s] && a[s].rubric.pass).length}/${rows.length}</td>`).join("");
   const toks = slots.map(([s]) => { const v = rows.filter(a => a[s]); return `<td class="mono sub">${v.length ? fmtN(Math.round(v.reduce((x, a) => x + a[s].prompt_tokens, 0) / v.length)) : ""}</td>`; }).join("");
   return `${header(d, "summary")}<div style="display:flex">${controls("summary", 0, rows.length)}</div><div class="summary" style="flex:none"><table><tr><th>Question</th>${slots.map(([s, t]) => `<th style="color:var(--${s})">${esc(t.split(" · ")[0])}</th>`).join("")}</tr>
@@ -256,19 +280,19 @@ function renderSpeed(d) {
   const y = v => T + (1 - v / ymax) * (H - T - B);
   const step = ymax > 12 ? 5 : ymax > 6 ? 2 : ymax > 2 ? 1 : 0.5;
   let g = "";
-  for (let v = 0; v <= ymax; v += step) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#30363d"/><text x="${L - 16}" y="${y(v) + 7}" fill="#8b949e" font-size="22" text-anchor="end">${v}</text>`;
-  for (const s of sizes) g += `<line x1="${x(s)}" x2="${x(s)}" y1="${T}" y2="${H - B}" stroke="#21262d"/><text x="${x(s)}" y="${H - B + 34}" fill="#8b949e" font-size="22" text-anchor="middle">${s}</text>`;
-  g += `<text x="${(L + W - R) / 2}" y="${H - 22}" fill="#e6edf3" font-size="24" text-anchor="middle">documents in the collection (250 tokens each)</text>
-    <text transform="translate(34 ${(T + H - B) / 2}) rotate(-90)" fill="#e6edf3" font-size="24" text-anchor="middle">seconds per answer</text>`;
-  const col = { full: "var(--full)", memorilla: "var(--memorilla)", memorilla_answer: "#b39ddb" };
+  for (let v = 0; v <= ymax; v += step) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#e3dccb"/><text x="${L - 16}" y="${y(v) + 7}" fill="#4a463d" font-size="22" font-family="SF Mono, Menlo, monospace" text-anchor="end">${v}</text>`;
+  for (const s of sizes) g += `<line x1="${x(s)}" x2="${x(s)}" y1="${T}" y2="${H - B}" stroke="#ece6d8"/><text x="${x(s)}" y="${H - B + 34}" fill="#4a463d" font-size="22" font-family="SF Mono, Menlo, monospace" text-anchor="middle">${s}</text>`;
+  g += `<text x="${(L + W - R) / 2}" y="${H - 22}" fill="#1d1b17" font-size="24" font-family="Iowan Old Style, Georgia, serif" font-style="italic" text-anchor="middle">documents in the collection (250 tokens each)</text>
+    <text transform="translate(34 ${(T + H - B) / 2}) rotate(-90)" fill="#1d1b17" font-size="24" font-family="Iowan Old Style, Georgia, serif" font-style="italic" text-anchor="middle">seconds per answer</text>`;
+  const col = { full: "var(--full)", memorilla: "var(--memorilla)", memorilla_answer: "#b97ab5" };
   for (const [k, p] of Object.entries(pts)) {
     if (!p.length) continue; p.sort((a, b) => a[0] - b[0]);
     const path = p.map(([s, v], j) => `${j ? "L" : "M"}${x(s)},${y(v)}`).join(" ");
     const dash = k === "memorilla_answer" ? `stroke-dasharray="10 8" stroke-width="4"` : `stroke-width="7"`;
     g += `<path d="${path}" fill="none" stroke="${col[k]}" ${dash} stroke-linejoin="round" stroke-linecap="round"/>`;
-    g += p.map(([s, v]) => `<circle cx="${x(s)}" cy="${y(v)}" r="8" fill="${col[k]}"/>`).join("");
+    g += p.map(([s, v]) => `<rect x="${x(s) - 7}" y="${y(v) - 7}" width="14" height="14" fill="#fffdf7" stroke="${col[k]}" stroke-width="4"/>`).join("");
     const [ls, lv] = p[p.length - 1];
-    g += `<text x="${x(ls) + 16}" y="${y(lv) + 9}" fill="${col[k]}" font-size="28" font-weight="800">${lv.toFixed(2)} s</text>`;
+    g += `<text x="${x(ls) + 16}" y="${y(lv) + 9}" fill="${col[k]}" font-size="28" font-weight="800" font-family="SF Mono, Menlo, monospace">${lv.toFixed(2)} s</text>`;
   }
   if (fail) g += `<line x1="${x(fail.size)}" x2="${x(fail.size)}" y1="${T}" y2="${H - B}" stroke="var(--bad)" stroke-width="4" stroke-dasharray="6 8"/>
     <text x="${x(fail.size) - 12}" y="${T + 30}" fill="var(--bad)" font-size="24" text-anchor="end">out of context/VRAM</text>`;
@@ -277,7 +301,7 @@ function renderSpeed(d) {
     const fc = f ? (f.status === "ok" ? fmtS(f.latency_s) : `<span style="color:var(--bad)">no fit</span>`) : "";
     return `<tr><td class="mono">${s}</td><td class="mono" style="color:var(--full)">${fc}</td><td class="mono" style="color:var(--memorilla)">${m ? fmtS(m.latency_s) : ""}</td><td class="mono sub">${m ? `${m.embed_s.toFixed(2)} + ${m.generate_s.toFixed(2)} s` : ""}</td></tr>`; }).join("");
   const sub = `same question · 1 → ${sizes[sizes.length - 1]} passages of 250 tokens · Qwen3-8B · ${d.config.speed.max_new_tokens} new tokens max`;
-  return `${header(d, sub)}<div class="legend" style="align-items:center"><span><b style="background:var(--full)"></b>Full context</span><span><b style="background:var(--memorilla)"></b>Memorilla, end to end (incl. embedding)</span><span><b style="background:#b39ddb"></b>Memorilla, answering only (paper's definition)</span>${controls("speed")}</div>
+  return `${header(d, sub)}<div class="legend" style="align-items:center"><span><b style="background:var(--full)"></b>Full context</span><span><b style="background:var(--memorilla)"></b>Memorilla, end to end (incl. embedding)</span><span><b style="background:#b97ab5"></b>Memorilla, answering only (paper's definition)</span>${controls("speed")}</div>
     <div class="speed"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${g}</svg>
     <div class="summary"><table><tr><th>docs</th><th>full</th><th>Memorilla</th><th>embed + answer</th></tr>${rows}</table></div></div>
     ${LOGS()}<footer><span style="margin-left:auto">${footerHtml(d)}</span></footer>`;
@@ -320,8 +344,10 @@ async function pollLogs() {
   setTimeout(pollLogs, 500);
 }
 
+let METER_MAX = 40960;
 function render() {
   const app = document.getElementById("app");
+  if (state && state.data && state.data.config) METER_MAX = state.data.config.decoder.max_model_len || 40960;
   if (state && state.loading) { app.innerHTML = renderLoading(state.loading); updateLogs(); return; }
   if (!state || !state.data) { app.innerHTML = renderEmpty("Waiting for a demo run…"); return; }
   const d = state.data;
