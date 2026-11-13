@@ -66,7 +66,7 @@ tr.total td { font-weight: 800; font-size: 24px; border-top: 2px solid var(--lin
 .logs.big { flex: 1; height: auto; font-size: 16px; }
 .logs .w { color: #d29922; } .logs .e { color: var(--bad); } .logs .i b { color: #58a6ff; font-weight: 400; }
 .loading { display: flex; flex-direction: column; gap: 16px; flex: 1; min-height: 0; }
-.loading .big { font-size: 34px; font-weight: 700; } .loading .big span { color: var(--memorilla); }
+.loading .title { font-size: 34px; font-weight: 700; } .loading .title span { color: var(--memorilla); }
 .help { position: fixed; right: 14px; bottom: 8px; font-size: 13px; color: #8b949e66; }
 </style>
 </head>
@@ -267,9 +267,9 @@ function renderSpeed(d) {
 function renderEmpty(msg) { return `<div class="empty">${esc(msg)}</div>`; }
 
 function renderLoading(l) {
-  const secs = Math.max(0, Math.round(Date.now() / 1000 - l.since));
+  const secs = Math.max(0, Math.round(l.elapsed + (Date.now() - l.fetched) / 1000));
   return `<header><h1>${esc(TITLES[l.demo] || l.demo)}</h1><span class="sub">starting up</span><span class="right"><span class="badge live">live run</span></span></header>
-    <div class="loading"><div class="big">Loading models <span class="mono">${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}</span></div>
+    <div class="loading"><div class="title">Loading models <span class="mono">${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}</span></div>
     <div class="sub">Qwen3-8B decoder · Qwen3-Embedding-4B encoder · Memorilla memory module — engine logs below</div>
     <div id="logs" class="logs big"></div></div>`;
 }
@@ -320,6 +320,7 @@ async function poll() {
     const text = await r.text();
     if (text !== lastText) {
       lastText = text; state = JSON.parse(text);
+      if (state.loading) state.loading.fetched = Date.now();
       const d = state.data;
       if (d && d.answers && SLOTS[d.demo]) {
         if (complete(d) && !view.doneAt) view.doneAt = Date.now();

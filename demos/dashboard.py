@@ -175,7 +175,8 @@ def make_handler(args: argparse.Namespace, replay: Replay | None):  # noqa: ANN2
                     loading = None
                     if log is not None and not (REPO_ROOT / "results" / f"{log.stem}.json").exists():
                         # the newest run is still loading models: it has a log but no results file yet
-                        loading = {"demo": log.stem.split("-")[0], "since": log.stat().st_ctime}
+                        started = time.mktime(time.strptime("-".join(log.stem.split("-")[-2:]), "%Y%m%d-%H%M%S"))
+                        loading = {"demo": log.stem.split("-")[0], "elapsed": round(time.time() - started, 1)}
                     data = None
                     if path is not None:
                         try:

@@ -20,7 +20,7 @@ from demos.config import CONFIG_FILE, repo_path
 from demos.runtime import now_iso, run_metadata, save_results
 
 
-CORE = ("torch_build", "torch_kernels")
+CORE = ("gpu_health", "torch_build", "torch_kernels")
 MARKER = "CHECK_RESULT "
 
 
@@ -118,7 +118,36 @@ def checks() -> dict[str, tuple[str, Callable[[], str]]]:
             raise RuntimeError("triton add mismatch")
         return f"triton {triton.__version__} JIT kernel ok"
 
+    def gpu_health() -> str:
+        """Memory-error health from NVML: a GPU that has run out of spare rows will crash mid-run."""
+        import pynvml
+
+        pynvml.nvmlInit()
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        problems, facts = [], []
+        try:
+            corrected, uncorrected, pending, failure = pynvml.nvmlDeviceGetRemappedRows(handle)
+            facts.append(f"remapped rows {corrected}+{uncorrected}")
+            if failure:
+                problems.append("row remapping FAILED (no spare rows left)")
+            if pending:
+                problems.append("row remap pending (needs a GPU reset)")
+        except pynvml.NVMLError:
+            facts.append("row remapping n/a")
+        try:
+            volatile = pynvml.nvmlDeviceGetTotalEccErrors(
+                handle, pynvml.NVML_MEMORY_ERROR_TYPE_UNCORRECTED, pynvml.NVML_VOLATILE_ECC)
+            facts.append(f"uncorrectable ECC since boot {volatile}")
+            if volatile:
+                problems.append(f"{volatile} uncorrectable ECC errors since boot")
+        except pynvml.NVMLError:
+            facts.append("ECC n/a")
+        if problems:
+            raise RuntimeError("faulty GPU: " + "; ".join(problems) + " - use a different machine")
+        return "healthy: " + ", ".join(facts)
+
     return {
+        "gpu_health": ("GPU memory health (ECC, row remapping)", gpu_health),
         "torch_build": ("torch build has this GPU's arch", torch_build),
         "torch_kernels": ("torch CUDA kernels", torch_kernels),
         "vllm_ops": ("vLLM compiled ops (_C)", vllm_custom_ops),
