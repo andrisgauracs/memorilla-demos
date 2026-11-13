@@ -67,12 +67,16 @@ tr.total td { font-weight: 800; font-size: 24px; border-top: 2px solid var(--lin
 .logs .w { color: #d29922; } .logs .e { color: var(--bad); } .logs .i b { color: #58a6ff; font-weight: 400; }
 .loading { display: flex; flex-direction: column; gap: 16px; flex: 1; min-height: 0; }
 .loading .title { font-size: 34px; font-weight: 700; } .loading .title span { color: var(--memorilla); }
-.help { position: fixed; right: 14px; bottom: 8px; font-size: 13px; color: #8b949e66; }
+.controls { display: flex; gap: 8px; margin-left: auto; }
+.btn { font: 600 15px/1 ui-sans-serif, system-ui, sans-serif; color: var(--dim); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 8px; padding: 7px 12px; cursor: pointer; }
+.btn:hover { color: var(--text); border-color: #8b949e; }
+.btn.on { color: var(--text); border-color: var(--memorilla); }
+.btn:disabled { opacity: .35; cursor: default; }
 </style>
 </head>
 <body>
 <div id="app"><div class="empty">Waiting for a demo run…<br><span class="sub">start one with make sanity / demo-clue / demo-pmv2 / demo-speed / demo-book</span></div></div>
-<div class="help">← → browse · F follow · S summary · L logs · B badge · R restart replay</div>
 <script>
 "use strict";
 const SLOTS = {
@@ -166,6 +170,20 @@ function header(d, extra) {
   return `<header><h1>${esc(TITLES[d.demo] || d.demo)}</h1><span class="sub">${extra || ""}</span><span class="right">${badge}</span></header>`;
 }
 
+function controls(kind, i, have) {
+  const b = (action, label, opts = {}) => `<button class="btn ${opts.on ? "on" : ""}" data-action="${action}" ${opts.off ? "disabled" : ""}>${label}</button>`;
+  const parts = [];
+  if (kind === "board" || kind === "summary") {
+    parts.push(b("prev", "‹ Prev", { off: kind === "board" && i <= 0 }));
+    parts.push(b("next", "Next ›", { off: kind === "board" && i >= have - 1 }));
+    parts.push(b("follow", state.mode === "live" ? "Live" : "Latest", { on: view.follow && !view.summary }));
+    parts.push(b("summary", "Summary", { on: view.summary }));
+  }
+  if (kind !== "summary") parts.push(b("logs", "Logs", { on: view.logs }));
+  if (state.mode === "replay") parts.push(b("restart", "Restart"));
+  return `<div class="controls">${parts.join("")}</div>`;
+}
+
 function questionCount(d) { return d.demo === "pmv2" ? (d.rows || []).length : (d.questions || []).length; }
 function answeredCount(d) { return (d.answers || []).length; }
 function complete(d) {
@@ -200,7 +218,7 @@ function renderBoard(d) {
   const dots = Array.from({ length: n }, (_, k) => `<span class="${k < have ? "on" : ""} ${k === i ? "cur" : ""}"></span>`).join("");
   const slots = SLOTS[d.demo];
   const allIn = slots.every(([k]) => answers[k]);
-  return `${header(d, sub)}<div style="display:flex;gap:16px;align-items:center"><span class="sub">${i + 1} of ${n}</span><div class="dots">${dots}</div></div>
+  return `${header(d, sub)}<div style="display:flex;gap:16px;align-items:center"><span class="sub">${i + 1} of ${n}</span><div class="dots">${dots}</div>${controls("board", i, have)}</div>
     <div class="question"><small>${esc(small)}</small>${esc(qtext)}</div>
     <div class="grid c2">${slots.map(([k, t]) => card(k, t, answers[k], noteFor(d, i, k, answers[k]))).join("")}</div>
     ${LOGS()}<footer>${allIn ? `<span class="reveal">${reveal}</span>` : ""}<span style="margin-left:auto">${footerHtml(d)}</span></footer>`;
@@ -212,7 +230,7 @@ function renderSummary(d) {
   const body = rows.map((a, k) => `<tr><td>${label(k)}</td>${slots.map(([s]) => a[s] ? `<td><span class="mark ${a[s].rubric.pass ? "ok" : "bad"}" style="display:inline-grid;width:28px;height:28px;font-size:18px">${a[s].rubric.pass ? "✓" : "✗"}</span> <span class="mono sub">${fmtS(a[s].latency_s)}</span></td>` : "<td></td>").join("")}</tr>`).join("");
   const total = slots.map(([s]) => `<td style="color:var(--${s})">${rows.filter(a => a[s] && a[s].rubric.pass).length}/${rows.length}</td>`).join("");
   const toks = slots.map(([s]) => { const v = rows.filter(a => a[s]); return `<td class="mono sub">${v.length ? fmtN(Math.round(v.reduce((x, a) => x + a[s].prompt_tokens, 0) / v.length)) : ""}</td>`; }).join("");
-  return `${header(d, "summary")}<div class="summary" style="flex:none"><table><tr><th>Question</th>${slots.map(([s, t]) => `<th style="color:var(--${s})">${esc(t.split(" · ")[0])}</th>`).join("")}</tr>
+  return `${header(d, "summary")}<div style="display:flex">${controls("summary", 0, rows.length)}</div><div class="summary" style="flex:none"><table><tr><th>Question</th>${slots.map(([s, t]) => `<th style="color:var(--${s})">${esc(t.split(" · ")[0])}</th>`).join("")}</tr>
     ${body}<tr class="total"><td>Correct</td>${total}</tr><tr><td class="sub">Avg tokens the LLM received</td>${toks}</tr></table></div><footer><span style="margin-left:auto">${footerHtml(d)}</span></footer>`;
 }
 
@@ -222,6 +240,7 @@ function renderSanity(d) {
   const m = d.methods || {};
   const reveal = i.clue_index != null ? `The only clue is chat ${i.clue_index + 1} of ${i.num_documents}: “${esc(i.clue_excerpt)}”` : "";
   return `${header(d, sub)}<div class="question"><small>PersonaMem-v2 test row ${i.row ?? ""} · the README's own example</small>${esc(i.question || "")}</div>
+    <div style="display:flex">${controls("sanity")}</div>
     <div class="grid c2" style="grid-auto-rows:1fr">${SLOTS.sanity.map(([k, t]) => card(k, t, m[k], noteFor(d, 0, k, m[k]))).join("")}</div>
     ${LOGS()}<footer>${m.memorilla ? `<span class="reveal">${reveal}</span>` : ""}<span style="margin-left:auto">${footerHtml(d)}</span></footer>`;
 }
@@ -258,7 +277,7 @@ function renderSpeed(d) {
     const fc = f ? (f.status === "ok" ? fmtS(f.latency_s) : `<span style="color:var(--bad)">no fit</span>`) : "";
     return `<tr><td class="mono">${s}</td><td class="mono" style="color:var(--full)">${fc}</td><td class="mono" style="color:var(--memorilla)">${m ? fmtS(m.latency_s) : ""}</td><td class="mono sub">${m ? `${m.embed_s.toFixed(2)} + ${m.generate_s.toFixed(2)} s` : ""}</td></tr>`; }).join("");
   const sub = `same question · 1 → ${sizes[sizes.length - 1]} passages of 250 tokens · Qwen3-8B · ${d.config.speed.max_new_tokens} new tokens max`;
-  return `${header(d, sub)}<div class="legend"><span><b style="background:var(--full)"></b>Full context</span><span><b style="background:var(--memorilla)"></b>Memorilla, end to end (incl. embedding)</span><span><b style="background:#b39ddb"></b>Memorilla, answering only (paper's definition)</span></div>
+  return `${header(d, sub)}<div class="legend" style="align-items:center"><span><b style="background:var(--full)"></b>Full context</span><span><b style="background:var(--memorilla)"></b>Memorilla, end to end (incl. embedding)</span><span><b style="background:#b39ddb"></b>Memorilla, answering only (paper's definition)</span>${controls("speed")}</div>
     <div class="speed"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${g}</svg>
     <div class="summary"><table><tr><th>docs</th><th>full</th><th>Memorilla</th><th>embed + answer</th></tr>${rows}</table></div></div>
     ${LOGS()}<footer><span style="margin-left:auto">${footerHtml(d)}</span></footer>`;
@@ -334,18 +353,21 @@ async function poll() {
   setTimeout(poll, 600);
 }
 
-document.addEventListener("keydown", e => {
+function act(action) {
   const d = state && state.data;
-  if (e.key === "ArrowLeft" && d) { view.follow = false; view.summary = false; view.index = Math.max(0, (view.index ?? 0) - 1); }
-  else if (e.key === "ArrowRight" && d) { view.follow = false; view.summary = false; view.index = Math.min(answeredCount(d) - 1, (view.index ?? 0) + 1); }
-  else if (e.key === "f" || e.key === "F") { view.follow = true; view.summary = false; }
-  else if (e.key === "s" || e.key === "S") { view.summary = !view.summary; }
-  else if (e.key === "b" || e.key === "B") { view.badge = !view.badge; }
-  else if (e.key === "l" || e.key === "L") { view.logs = !view.logs; }
-  else if (e.key === "r" || e.key === "R") { fetch("/api/restart"); view = { ...view, follow: true, summary: false, doneAt: 0 }; lastText = ""; }
+  if (action === "prev" && d) { view.follow = false; view.summary = false; view.index = Math.max(0, (view.index ?? 0) - 1); }
+  else if (action === "next" && d) { view.follow = false; view.summary = false; view.index = Math.min(answeredCount(d) - 1, (view.index ?? 0) + 1); }
+  else if (action === "follow") { view.follow = true; view.summary = false; }
+  else if (action === "summary") { view.summary = !view.summary; if (!view.summary) view.follow = true; }
+  else if (action === "badge") { view.badge = !view.badge; }
+  else if (action === "logs") { view.logs = !view.logs; }
+  else if (action === "restart") { fetch("/api/restart"); view = { ...view, follow: true, summary: false, doneAt: 0 }; lastText = ""; }
   else return;
   render();
-});
+}
+document.addEventListener("click", e => { const btn = e.target.closest("[data-action]"); if (btn && !btn.disabled) act(btn.dataset.action); });
+const KEYS = { ArrowLeft: "prev", ArrowRight: "next", f: "follow", s: "summary", b: "badge", l: "logs", r: "restart" };
+document.addEventListener("keydown", e => { const a = KEYS[e.key] || KEYS[e.key.toLowerCase()]; if (a) act(a); });
 poll();
 pollLogs();
 </script>
