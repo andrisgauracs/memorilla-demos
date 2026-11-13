@@ -1,8 +1,32 @@
 # Findings
 
 What worked, what didn't, and what surprised us, per demo. Every number comes from a results file in `results/`.
-The numbers below are from the **test runs** in `results/test-runs/` (2026-11-13, H100 PCIe); the final recorded runs
-will be added next to them. Sample sizes are small (4-10 questions per demo): read them as behaviour, not statistics.
+**Final recorded runs** (the ones filmed) are in `results/` (2026-11-13, a second H100 PCIe); the earlier **test runs** on a
+different H100 PCIe are in `results/test-runs/`. The final runs reproduced the test runs exactly: every answer was word
+for word identical (Buried Clue 16/16, PersonaMem-v2 40/40, Hound 32/32), and speed-race timings agree within ~1%.
+The per-demo sections below quote the test runs; the scores are the same in the final runs. Sample sizes are small
+(4-10 questions per demo): read them as behaviour, not statistics.
+
+## Final recorded runs
+
+| Demo | Results file | No memory | RAG | Full context | Memorilla |
+| --- | --- | --- | --- | --- | --- |
+| Sanity (README example) | `sanity-20261113-221035.json` | ✗ generic list | - | - | ✓ README answer, 1.73 s |
+| The Buried Clue | `clue-20261113-221214.json` | 0/4 | 1/4 (control) | 0/4 | 0/4 |
+| PersonaMem-v2 sample | `pmv2-20261113-221513.json` | 1/10 | 1/10 | 1/10 | 2/10 |
+| The Hound of the Baskervilles | `book-20261113-222648.json` | 2/8 | 4/8 | 5/8 | 1/8 |
+
+Speed race (`speed-20261113-222105.{json,csv,png}`): full context 0.37 s -> 2.63 s (128 docs) -> **19.33 s** (512 docs);
+Memorilla end to end 0.19 s -> 0.90 s -> **3.25 s**, of which answering 0.14 -> 0.12 -> **0.12 s** and embedding
+0.04 -> 0.78 -> 3.13 s. Peak VRAM 70.7 GiB. All GPU checks passed, including the memory-health check
+(`gpu_check-2026-11-13-215740.json`).
+
+### A faulty cloud GPU along the way
+
+A first replacement H100 (Scaleway via Shadeform) passed the kernel checks but crashed while loading the decoder with
+"CUDA error: Invalid access of peer GPU memory over nvlink or a hardware error". The kernel log showed Xid 94 and
+`nvidia-smi` reported 2,529 lifetime uncorrectable DRAM errors with "Remapping Failure Occurred: Yes". The record is in
+`results/failed-hardware/`; `make check-gpu` now reads the GPU's ECC and row-remapping state and fails on such a card.
 
 ## Hardware
 

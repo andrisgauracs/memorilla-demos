@@ -1,0 +1,794 @@
+{
+  "schema_version": 1,
+  "demo": "clue",
+  "timestamp": "2026-11-13T22:12:14+00:00",
+  "config": {
+    "profile": "h100",
+    "seed": 23,
+    "models": {
+      "decoder": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      },
+      "encoder": {
+        "repo": "Qwen/Qwen3-Embedding-4B",
+        "revision": "5cf2132abc99cad020ac570b19d031efec650f2b"
+      },
+      "memorilla": {
+        "repo": "memorilla/Memorilla-Qwen3-8B",
+        "revision": "f6b15af56aa687861c8d2d03b1cd8f7979881361"
+      }
+    },
+    "datasets": {
+      "memorilla_data": {
+        "repo": "memorilla/Memorilla-Data",
+        "revision": "c6b0d7eea65659254115ed31dd26869eb6dc0586"
+      }
+    },
+    "paths": {
+      "memorilla_data": ".cache/memorilla-data",
+      "model_cache": null,
+      "results": "results",
+      "logs": "logs"
+    },
+    "generation": {
+      "max_new_tokens": 256,
+      "temperature": 0.0
+    },
+    "display": {
+      "width": 120,
+      "panel_chars": 520,
+      "replay_speed": 1.0
+    },
+    "sanity": {
+      "checkpoint": "pmv2",
+      "config": "pmv2",
+      "split": "test",
+      "row": 73,
+      "system_prompt": "PERSONA_PROMPT",
+      "rubric": {
+        "all_of": [
+          [
+            "diabet"
+          ]
+        ]
+      }
+    },
+    "clue": {
+      "checkpoint": "pmv2",
+      "system_prompt": "PERSONA_PROMPT",
+      "top_k": 5,
+      "warmup_question": "Any tips for keeping a houseplant alive?"
+    },
+    "speed": {
+      "checkpoint": "stage3",
+      "system_prompt": "PERSONA_PROMPT",
+      "question": "Why does Dr. Mortimer come to see Sherlock Holmes, and what is he afraid of?",
+      "sizes": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128,
+        256,
+        512
+      ],
+      "max_new_tokens": 32,
+      "warmup_runs": 1,
+      "timed_runs": 3,
+      "native_window": 32768,
+      "yarn_window": 131072,
+      "yarn_factor": 4.0,
+      "full_context_gpu_memory_utilization": 0.85
+    },
+    "book": {
+      "checkpoint": "stage3",
+      "memorilla_system_prompt": "PERSONA_PROMPT",
+      "baseline_system_prompt": "BRIEF_ANSWER_PROMPT",
+      "max_new_tokens": 64,
+      "top_k": 5,
+      "truncate_keep": "end",
+      "warmup_question": "Who is Sherlock Holmes's friend and chronicler?"
+    },
+    "pmv2_check": {
+      "checkpoint": "pmv2",
+      "system_prompt": "PERSONA_PROMPT",
+      "seed": 23,
+      "rows": 10,
+      "top_k": 5
+    },
+    "encoder": {
+      "gpu_memory_utilization": 0.25,
+      "max_model_len": 4096,
+      "engine_extra": {}
+    },
+    "decoder": {
+      "gpu_memory_utilization": 0.6,
+      "max_model_len": 40960,
+      "engine_extra": {}
+    },
+    "attention_backend": null
+  },
+  "dataset": {
+    "chats": "data/sam/chats.json",
+    "chats_sha256": "54f2fb20d9e567ea5c5f8bfa2dd6e7d5de1b40e5efea60f1e0f670a5ce17474e",
+    "questions": "data/sam/questions.json",
+    "questions_sha256": "f4d755b08ffb0c2908375038774db850c1805082c5b26c0be85572e5b268b7e7"
+  },
+  "questions": [
+    {
+      "id": "getaway",
+      "kind": "buried_clue",
+      "question": "Plan me a weekend getaway from Toronto.",
+      "clue_chat": 23,
+      "clue_summary": "Sam's dog Biscuit panics and gets carsick on any car ride longer than ~20 minutes.",
+      "good_answer": "Takes the dog into account: avoids a long drive, or suggests the train or a pet sitter.",
+      "rubric": {
+        "all_of": [
+          [
+            "biscuit",
+            "dog",
+            "pup",
+            "pet"
+          ],
+          [
+            "train",
+            "via rail",
+            "go transit",
+            "sitter",
+            "boarding",
+            "kennel",
+            "carsick",
+            "car sick",
+            "car-sick",
+            "motion sick",
+            "short drive",
+            "long drive",
+            "long car",
+            "20 minutes",
+            "20-minute",
+            "close to home",
+            "nearby"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "parents_dinner",
+      "kind": "buried_clue",
+      "question": "What should I cook for my parents this Sunday?",
+      "clue_chat": 88,
+      "clue_summary": "Sam has been vegan for years (mentioned only while asking about leather-jacket alternatives).",
+      "good_answer": "Suggests a vegan menu.",
+      "rubric": {
+        "all_of": [
+          [
+            "vegan",
+            "plant-based",
+            "plant based"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "gym_time",
+      "kind": "buried_clue",
+      "question": "When's the best time for me to go to the gym?",
+      "clue_chat": 131,
+      "clue_summary": "Sam's bakery shift starts at 3 a.m. every weekday.",
+      "good_answer": "Works around the early shift: late morning or early afternoon, after the shift.",
+      "rubric": {
+        "all_of": [
+          [
+            "shift",
+            "bakery",
+            "3 a.m",
+            "3 am",
+            "3am",
+            "3:00 a",
+            "baking"
+          ],
+          [
+            "late morning",
+            "midday",
+            "mid-day",
+            "noon",
+            "early afternoon",
+            "afternoon",
+            "after your shift",
+            "after work",
+            "10 a.m",
+            "10 am",
+            "11 a.m",
+            "11 am",
+            "1 p.m",
+            "1 pm",
+            "2 p.m",
+            "2 pm"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "control",
+      "kind": "control",
+      "question": "What's my sister's name, and when is her birthday?",
+      "clue_chat": 57,
+      "clue_summary": "Stated plainly in one chat: Sam's sister Priya's birthday is on March 14.",
+      "good_answer": "Priya, March 14.",
+      "rubric": {
+        "all_of": [
+          [
+            "priya"
+          ],
+          [
+            "march 14",
+            "14 march",
+            "14th of march",
+            "march 14th"
+          ]
+        ]
+      }
+    }
+  ],
+  "answers": [
+    {
+      "none": {
+        "answer": "Sure! Here's a curated weekend getaway plan from Toronto that balances relaxation, adventure, and local culture. This plan is ideal for a couple or a solo traveler and can be adjusted based on your interests.\n\n---\n\n### 🌄 **Weekend Getaway from Toronto: Niagara Falls & the Niagara Region**\n\n#### **Day 1: Departure & Arrival in Niagara Falls**\n**Morning:**\n- Depart Toronto early (around 7:00 AM) to avoid traffic.\n- Take the **Niagara Falls Queen Elizabeth Way (QEW)** or **Niagara Parkway** for scenic views.\n- Arrive in **Niagara Falls** by mid-morning.\n\n**Afternoon:**\n- **Niagara Falls Viewing Deck**: Start with the iconic view of the falls. You can choose between the **Horseshoe Falls** or **American Falls**.\n- **Maid of the Mist Boat Tour**: Take a boat tour to get up close to the falls (optional, but highly recommended).\n- **Clifton Hill**: Walk through this lively street with shops, restaurants, and attractions like the **Niagara Falls Adventure Aquarium** or **Niagara SkyWheel**.\n\n**Evening:**\n- Dine at a local restaurant on **Clifton Hill** or",
+        "prompt_tokens": 46,
+        "output_tokens": 256,
+        "latency_s": 2.8051,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "biscuit",
+              "dog",
+              "pup",
+              "pet"
+            ],
+            [
+              "train",
+              "via rail",
+              "go transit",
+              "sitter",
+              "boarding",
+              "kennel",
+              "carsick",
+              "car sick",
+              "car-sick",
+              "motion sick",
+              "short drive",
+              "long drive",
+              "long car",
+              "20 minutes",
+              "20-minute",
+              "close to home",
+              "nearby"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "Here's a thoughtfully planned **weekend getaway from Toronto** that balances relaxation, adventure, and romance—perfect for an anniversary or just a fun escape:\n\n---\n\n### 🌄 **Destination: Niagara-on-the-Lake**  \n**Why it works:** A charming lakeside town just a 1.5-hour drive from Toronto, known for its wineries, scenic views, and cozy inns. It’s romantic, scenic, and easy to explore in two days.\n\n---\n\n### 📅 **Day 1: Arrival & Relaxation**\n**Morning:**\n- **Drive:** Depart Toronto early (around 8:30 AM) to avoid traffic.\n- **Check-in:** Arrive at a cozy inn or boutique hotel in Niagara-on-the-Lake. Some great options include **The Fairmont Sonora Resort** or **The Niagara-on-the-Lake Inn**.\n\n**Afternoon:**\n- **Wine Tasting:** Take a guided wine tour of the region (many wineries offer tastings and tours). Try **Niagara-on-the-Lake Winery** or **Belle Meade Winery**.\n- **Lunch:** Enjoy a meal at a local restaurant like **The Cellar Restaurant** or **The Grange Restaurant**",
+        "prompt_tokens": 715,
+        "output_tokens": 256,
+        "latency_s": 2.9241,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0846,
+        "generate_s": 2.8395,
+        "retrieved": [
+          40,
+          8,
+          111,
+          105,
+          98
+        ],
+        "scores": [
+          0.7446,
+          0.638,
+          0.4854,
+          0.382,
+          0.3557
+        ],
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "biscuit",
+              "dog",
+              "pup",
+              "pet"
+            ],
+            [
+              "train",
+              "via rail",
+              "go transit",
+              "sitter",
+              "boarding",
+              "kennel",
+              "carsick",
+              "car sick",
+              "car-sick",
+              "motion sick",
+              "short drive",
+              "long drive",
+              "long car",
+              "20 minutes",
+              "20-minute",
+              "close to home",
+              "nearby"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "Sure! Here's a **5-day weekend getaway plan** from **Toronto** that balances relaxation, adventure, and local culture. This itinerary is perfect for a short trip with minimal stress, and it’s flexible enough to adjust based on your interests.\n\n---\n\n### 🌄 **Day 1: Departure & Arrival**\n- **Morning**: Depart Toronto early (around 7:30 AM) to avoid traffic. Consider a **high-speed train** (Go Train) or **car rental** if you prefer more flexibility.\n- **Afternoon**: Arrive at your destination (see below) and check into your accommodation.\n- **Evening**: Light dinner at a local restaurant or grab a quick bite at a café. If you're staying in a town with a vibrant nightlife, enjoy a casual drink or two.\n\n---\n\n### 🏞️ **Day 2: Explore the Area**\n#### Option 1: **Niagara Falls (1.5–2 hours from Toronto)**\n- **Morning**: Take a **boat tour** of the Falls (e.g., Maid of the Mist or Journey Behind the Falls) for an unforgettable experience.\n- **Afternoon**: Explore the **Clifton Hill** area in Niagara Falls for shopping, street performers, and",
+        "prompt_tokens": 27100,
+        "output_tokens": 256,
+        "latency_s": 8.0908,
+        "input_mode": "token_ids",
+        "untruncated_prompt_tokens": 27100,
+        "truncated": false,
+        "fraction_seen": 1.0,
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "train"
+          ],
+          "missing": [
+            [
+              "biscuit",
+              "dog",
+              "pup",
+              "pet"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "If you want a weekend escape from Toronto, consider heading to Niagara Falls. You can spend the first day exploring the falls and the surrounding attractions, then spend the second day relaxing at a nearby resort or enjoying a scenic drive through the countryside.",
+        "prompt_tokens": 64,
+        "memory_tokens": 16,
+        "output_tokens": 48,
+        "embed_s": 0.7446,
+        "generate_s": 0.6022,
+        "latency_s": 1.3468,
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "nearby"
+          ],
+          "missing": [
+            [
+              "biscuit",
+              "dog",
+              "pup",
+              "pet"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "That's a wonderful question! Cooking for your parents is a great way to show your love and care. To help you decide, I'd love to know a few more details:\n\n1. **What's your parents' favorite type of cuisine?** (e.g., Italian, Chinese, Mexican, Indian, etc.)\n2. **Do they have any dietary restrictions or preferences?** (e.g., vegetarian, gluten-free, low-sodium, etc.)\n3. **How many people are you cooking for?**\n4. **Do you have any specific ingredients or tools you'd like to use?**\n5. **What's your cooking skill level?** (e.g., beginner, intermediate, advanced)\n\nLet me know, and I’ll suggest a delicious and thoughtful meal for your parents! 🍽️❤️",
+        "prompt_tokens": 48,
+        "output_tokens": 167,
+        "latency_s": 1.8297,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "vegan",
+              "plant-based",
+              "plant based"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "Since your parents are visiting on Sunday and you want to cook something impressive but easy, here are a few thoughtful and crowd-pleasing options that are simple, flavorful, and allow you to enjoy the time with them:\n\n### 1. **Sheet-Pan Chicken with Veggies**  \n- **Why it works**: One-pan, minimal cleanup, and easy to customize.  \n- **How to do it**:  \n  - Season chicken breasts with garlic, lemon zest, salt, and pepper.  \n  - Toss with halved cherry tomatoes, sliced zucchini, and red onion.  \n  - Roast at 400°F (200°C) for 25–30 minutes.  \n  - Serve with a simple green salad and crusty bread.  \n\n### 2. **One-Pan Salmon with Asparagus**  \n- **Why it works**: Healthy, elegant, and easy to prepare.  \n- **How to do it**:  \n  - Season salmon fillets with dill, lemon, and olive oil.  \n  - Toss with asparagus and garlic.  \n  - Roast at 400°F (200°C) for 15–20 minutes.  \n  - Serve",
+        "prompt_tokens": 758,
+        "output_tokens": 256,
+        "latency_s": 2.9063,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0802,
+        "generate_s": 2.8261,
+        "retrieved": [
+          75,
+          29,
+          139,
+          118,
+          65
+        ],
+        "scores": [
+          0.6473,
+          0.3958,
+          0.3842,
+          0.3438,
+          0.3339
+        ],
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "vegan",
+              "plant-based",
+              "plant based"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "Cooking for your parents is a great way to show love and care! Here are a few ideas that are easy to prepare, delicious, and sure to please:\n\n### **1. Classic Comfort Food**\n- **Chicken Parmesan** – Crispy breaded chicken with marinara, mozzarella, and Parmesan. It’s hearty and always a hit.\n- **Macaroni and Cheese** – A simple, creamy, and comforting dish that’s hard to mess up.\n- **Beef Stew** – Slow-cooked with vegetables, potatoes, and herbs. It’s warm, filling, and perfect for a Sunday meal.\n\n### **2. Easy and Elegant**\n- **Sheet Pan Chicken and Veggies** – Roast chicken thighs, potatoes, and seasonal veggies with olive oil and herbs. Minimal effort, maximum flavor.\n- **One-Pan Pasta** – Use a skillet or oven-safe dish to cook pasta, chicken, and veggies all in one go. Add a splash of wine and Parmesan for extra flavor.\n- **Stuffed Peppers** – Fill bell peppers with a mix of rice, ground beef, and spices. Baked to perfection and easy to customize.\n\n### **3. Something Special but Simple**\n- **Beef and Vegetable",
+        "prompt_tokens": 27102,
+        "output_tokens": 256,
+        "latency_s": 8.0264,
+        "input_mode": "token_ids",
+        "untruncated_prompt_tokens": 27102,
+        "truncated": false,
+        "fraction_seen": 1.0,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "vegan",
+              "plant-based",
+              "plant based"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "Since you’re allergic to shellfish, you could make a hearty chicken and vegetable stir-fry with some jasmine rice on the side. It’s easy to prepare, avoids any shellfish, and your parents will enjoy the flavors.",
+        "prompt_tokens": 66,
+        "memory_tokens": 16,
+        "output_tokens": 46,
+        "embed_s": 0.7471,
+        "generate_s": 0.6047,
+        "latency_s": 1.3518,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "vegan",
+              "plant-based",
+              "plant based"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "The best time to go to the gym depends on your personal schedule, lifestyle, and goals. Here are some general guidelines to help you decide:\n\n### 1. **Morning (Early Morning or Early Afternoon)**\n- **Pros**: \n  - Can boost metabolism and energy levels for the day.\n  - Helps establish a routine and avoid distractions.\n  - May improve sleep quality if you're physically active in the morning.\n- **Cons**: \n  - Might be harder to stay consistent if you're not a morning person.\n  - Could be more challenging to get a good workout if you're still groggy.\n\n### 2. **Midday (Lunchtime or After Work)**\n- **Pros**: \n  - Can be a good time to relieve stress and recharge.\n  - If you're working out after lunch, it can help with digestion and energy levels.\n- **Cons**: \n  - May be difficult to find time if you have a busy schedule.\n  - Might be harder to stay focused if you're tired from work.\n\n### 3. **Evening (After Work or Before Bed)**\n- **Pros**: \n  - Can be a great way to unwind and decompress after a long day.\n  - May help with",
+        "prompt_tokens": 51,
+        "output_tokens": 256,
+        "latency_s": 2.8462,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "midday",
+            "noon",
+            "early afternoon",
+            "afternoon",
+            "after work"
+          ],
+          "missing": [
+            [
+              "shift",
+              "bakery",
+              "3 a.m",
+              "3 am",
+              "3am",
+              "3:00 a",
+              "baking"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "The best time to go to the gym depends on your personal schedule, energy levels, and goals, but here's a general guideline to help you decide:\n\n### 1. **Morning (6:00–9:00 AM)**\n- **Pros**: You're more likely to stick with your routine, and your body is fresh with energy. It can also help set a positive tone for the day.\n- **Cons**: You might feel sluggish if you haven’t eaten yet. Consider a light snack (like a banana or a protein bar) before your workout.\n\n### 2. **Mid-Morning (9:00–11:00 AM)**\n- **Pros**: You’ve had time to wake up and get your day started. Your body is usually more alert and ready to work out.\n- **Cons**: If you're in a rush or have a busy morning, it might be harder to commit.\n\n### 3. **Afternoon (1:00–3:00 PM)**\n- **Pros**: Great if you're a night owl or need a break from work. Your body is still active, and you might feel more motivated after a lunch break.\n- **Cons**: You might feel tired from work,",
+        "prompt_tokens": 801,
+        "output_tokens": 256,
+        "latency_s": 2.9541,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0857,
+        "generate_s": 2.8684,
+        "retrieved": [
+          98,
+          63,
+          14,
+          86,
+          0
+        ],
+        "scores": [
+          0.5339,
+          0.4977,
+          0.4548,
+          0.3847,
+          0.3579
+        ],
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "noon",
+            "afternoon"
+          ],
+          "missing": [
+            [
+              "shift",
+              "bakery",
+              "3 a.m",
+              "3 am",
+              "3am",
+              "3:00 a",
+              "baking"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "The **best time to go to the gym** depends on your **goals, schedule, and personal preferences**, but here’s a breakdown to help you decide:\n\n---\n\n### 🕒 **1. Morning (6:00–9:00 AM)**\n- **Pros**:  \n  - Boosts metabolism and energy for the day.  \n  - Fewer distractions (fewer people, less noise).  \n  - Helps you stick to your routine.  \n  - Can improve sleep quality if you’re consistent.  \n- **Cons**:  \n  - Might be harder to get motivated if you’re not used to it.  \n  - May require waking up earlier.  \n- **Best for**:  \n  - People who want to build a habit.  \n  - Those who need to avoid midday energy crashes.  \n  - Morning people who feel most productive early.\n\n---\n\n### 🕐 **2. Mid-Morning (9:00–11:00 AM)**\n- **Pros**:  \n  - You’re likely more alert after breakfast.  \n  - Good for people with a flexible schedule.  \n  - Can be a great time to focus on strength training or HIIT.  \n- **Cons**:  \n  - Might be",
+        "prompt_tokens": 27105,
+        "output_tokens": 256,
+        "latency_s": 8.5227,
+        "input_mode": "token_ids",
+        "untruncated_prompt_tokens": 27105,
+        "truncated": false,
+        "fraction_seen": 1.0,
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "midday"
+          ],
+          "missing": [
+            [
+              "shift",
+              "bakery",
+              "3 a.m",
+              "3 am",
+              "3am",
+              "3:00 a",
+              "baking"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "Since you’ve had a mild ankle sprain before, it’s probably best to go to the gym when you’re fully recovered and your ankle feels stable. Avoid high-impact activities until you’re sure it won’t flare up again.",
+        "prompt_tokens": 69,
+        "memory_tokens": 16,
+        "output_tokens": 47,
+        "embed_s": 0.7874,
+        "generate_s": 0.687,
+        "latency_s": 1.4744,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "shift",
+              "bakery",
+              "3 a.m",
+              "3 am",
+              "3am",
+              "3:00 a",
+              "baking"
+            ],
+            [
+              "late morning",
+              "midday",
+              "mid-day",
+              "noon",
+              "early afternoon",
+              "afternoon",
+              "after your shift",
+              "after work",
+              "10 a.m",
+              "10 am",
+              "11 a.m",
+              "11 am",
+              "1 p.m",
+              "1 pm",
+              "2 p.m",
+              "2 pm"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "I don't have access to personal information about you or your family members. You might want to check with your family or look through old photos or documents for that information. Let me know if there's anything else I can help with!",
+        "prompt_tokens": 51,
+        "output_tokens": 48,
+        "latency_s": 0.5458,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "priya"
+            ],
+            [
+              "march 14",
+              "14 march",
+              "14th of march",
+              "march 14th"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "Your sister's name is Priya, and her birthday is on March 14.",
+        "prompt_tokens": 929,
+        "output_tokens": 19,
+        "latency_s": 0.3198,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0627,
+        "generate_s": 0.2571,
+        "retrieved": [
+          56,
+          116,
+          118,
+          79,
+          75
+        ],
+        "scores": [
+          0.3686,
+          0.3085,
+          0.3051,
+          0.2864,
+          0.2838
+        ],
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "priya",
+            "march 14"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "I don't have access to personal information about your family members, including your sister's name or birthday. If you'd like help with something else, feel free to ask!",
+        "prompt_tokens": 27105,
+        "output_tokens": 36,
+        "latency_s": 2.431,
+        "input_mode": "token_ids",
+        "untruncated_prompt_tokens": 27105,
+        "truncated": false,
+        "fraction_seen": 1.0,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "priya"
+            ],
+            [
+              "march 14",
+              "14 march",
+              "14th of march",
+              "march 14th"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "Your sister’s name is Emily, and her birthday is on April 12th.",
+        "prompt_tokens": 69,
+        "memory_tokens": 16,
+        "output_tokens": 18,
+        "embed_s": 0.7246,
+        "generate_s": 0.2757,
+        "latency_s": 1.0003,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "priya"
+            ],
+            [
+              "march 14",
+              "14 march",
+              "14th of march",
+              "march 14th"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    }
+  ],
+  "hardware": {
+    "cpu": "Intel(R) Xeon(R) Platinum 8352Y CPU @ 2.20GHz",
+    "ram_gib": 125.9,
+    "gpu": {
+      "name": "NVIDIA H100 PCIe",
+      "memory_mib": 81559,
+      "driver": "580.126.09",
+      "compute_capability": "9.0"
+    }
+  },
+  "software": {
+    "python": "3.11.14",
+    "os": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+    "torch": "2.7.0+cu128",
+    "torch_cuda": "12.8",
+    "vllm": "0.9.1",
+    "transformers": "4.53.3",
+    "xformers": "0.0.30",
+    "memorilla": "1.0.0",
+    "memorilla_commit": "d8f18891a50bf33c18f04fe5167c22f51e58c9cd",
+    "vllm_use_v1": "0",
+    "vllm_attention_backend": null
+  },
+  "git": {
+    "commit": "348c3f3036300684ba00cb556d05674b304e5563",
+    "dirty": true
+  },
+  "load": {
+    "stages_s": {
+      "files": 0.28,
+      "memory_module": 1.49,
+      "encoder": 18.85,
+      "decoder": 60.66
+    },
+    "checkpoint": "pmv2",
+    "num_memories": 16,
+    "kv_cache_tokens": {
+      "decoder": 223968,
+      "encoder": null
+    }
+  },
+  "inputs": {
+    "num_chats": 150,
+    "history_tokens": 27054,
+    "index_build_s": 0.83
+  },
+  "warmup": {
+    "none": 2.7866,
+    "rag": 2.8839,
+    "full": 7.9158,
+    "memorilla": 2.1548
+  },
+  "vram": {
+    "total_mib": 81559,
+    "baseline_used_mib": 480,
+    "peak_used_mib": 61681,
+    "peak_demo_mib": 61201,
+    "other_processes_mib": 0
+  }
+}

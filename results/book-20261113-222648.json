@@ -1,0 +1,1563 @@
+{
+  "schema_version": 1,
+  "demo": "book",
+  "timestamp": "2026-11-13T22:26:48+00:00",
+  "config": {
+    "profile": "h100",
+    "seed": 23,
+    "models": {
+      "decoder": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      },
+      "encoder": {
+        "repo": "Qwen/Qwen3-Embedding-4B",
+        "revision": "5cf2132abc99cad020ac570b19d031efec650f2b"
+      },
+      "memorilla": {
+        "repo": "memorilla/Memorilla-Qwen3-8B",
+        "revision": "f6b15af56aa687861c8d2d03b1cd8f7979881361"
+      }
+    },
+    "datasets": {
+      "memorilla_data": {
+        "repo": "memorilla/Memorilla-Data",
+        "revision": "c6b0d7eea65659254115ed31dd26869eb6dc0586"
+      }
+    },
+    "paths": {
+      "memorilla_data": ".cache/memorilla-data",
+      "model_cache": null,
+      "results": "results",
+      "logs": "logs"
+    },
+    "generation": {
+      "max_new_tokens": 256,
+      "temperature": 0.0
+    },
+    "display": {
+      "width": 120,
+      "panel_chars": 520,
+      "replay_speed": 1.0
+    },
+    "sanity": {
+      "checkpoint": "pmv2",
+      "config": "pmv2",
+      "split": "test",
+      "row": 73,
+      "system_prompt": "PERSONA_PROMPT",
+      "rubric": {
+        "all_of": [
+          [
+            "diabet"
+          ]
+        ]
+      }
+    },
+    "clue": {
+      "checkpoint": "pmv2",
+      "system_prompt": "PERSONA_PROMPT",
+      "top_k": 5,
+      "warmup_question": "Any tips for keeping a houseplant alive?"
+    },
+    "speed": {
+      "checkpoint": "stage3",
+      "system_prompt": "PERSONA_PROMPT",
+      "question": "Why does Dr. Mortimer come to see Sherlock Holmes, and what is he afraid of?",
+      "sizes": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128,
+        256,
+        512
+      ],
+      "max_new_tokens": 32,
+      "warmup_runs": 1,
+      "timed_runs": 3,
+      "native_window": 32768,
+      "yarn_window": 131072,
+      "yarn_factor": 4.0,
+      "full_context_gpu_memory_utilization": 0.85
+    },
+    "book": {
+      "checkpoint": "stage3",
+      "memorilla_system_prompt": "PERSONA_PROMPT",
+      "baseline_system_prompt": "BRIEF_ANSWER_PROMPT",
+      "max_new_tokens": 64,
+      "top_k": 5,
+      "truncate_keep": "end",
+      "warmup_question": "Who is Sherlock Holmes's friend and chronicler?"
+    },
+    "pmv2_check": {
+      "checkpoint": "pmv2",
+      "system_prompt": "PERSONA_PROMPT",
+      "seed": 23,
+      "rows": 10,
+      "top_k": 5
+    },
+    "encoder": {
+      "gpu_memory_utilization": 0.25,
+      "max_model_len": 4096,
+      "engine_extra": {}
+    },
+    "decoder": {
+      "gpu_memory_utilization": 0.6,
+      "max_model_len": 40960,
+      "engine_extra": {}
+    },
+    "attention_backend": null
+  },
+  "dataset": {
+    "passages": "data/hound/passages.json",
+    "passages_sha256": "42b71193d018de1d5c33ac1e43b12208de363e2488e2fbae2c243c286a3a0c77",
+    "questions": "data/hound/questions.json",
+    "questions_sha256": "c35f9fc8e186157a7e5acb9f1bdcf7b83447655c6e03f6abd569f0d7c44ae3d5"
+  },
+  "inputs": {
+    "num_passages": 364,
+    "book_tokens": 72130,
+    "window": 40960,
+    "passage_chapters": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15
+    ],
+    "index_build_s": 1.88
+  },
+  "questions": [
+    {
+      "id": "walking_stick",
+      "question": "In The Hound of the Baskervilles, who gave Dr. Mortimer the walking stick he left at Baker Street, according to its engraving?",
+      "answer": "His friends of the C.C.H. - Charing Cross Hospital (\"To James Mortimer, M.R.C.S., from his friends of the C.C.H.\").",
+      "chapters": [
+        1
+      ],
+      "evidence": [
+        1,
+        5
+      ],
+      "rubric": {
+        "all_of": [
+          [
+            "c.c.h",
+            "charing cross"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "footprints",
+      "question": "What did Dr. Mortimer see on the ground near Sir Charles Baskerville's body that he did not mention at the inquest?",
+      "answer": "The footprints of a gigantic hound.",
+      "chapters": [
+        2
+      ],
+      "evidence": [
+        42
+      ],
+      "rubric": {
+        "all_of": [
+          [
+            "hound",
+            "dog"
+          ],
+          [
+            "footprint",
+            "print",
+            "track",
+            "mark"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "warning_note",
+      "question": "How was the anonymous warning note that Sir Henry received at his London hotel made?",
+      "answer": "From words cut out of a Times leading article and pasted onto the paper; only the word 'moor' was written in ink.",
+      "chapters": [
+        4
+      ],
+      "evidence": [
+        61,
+        62,
+        64,
+        66
+      ],
+      "rubric": {
+        "all_of": [
+          [
+            "times",
+            "newspaper",
+            "printed words",
+            "cut out",
+            "cut from",
+            "pasted"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "convict",
+      "question": "Who is the escaped convict hiding on the moor, and how is he connected to the Barrymores?",
+      "answer": "Selden, the Notting Hill murderer; he is Mrs. Barrymore's younger brother.",
+      "chapters": [
+        9
+      ],
+      "evidence": [
+        197,
+        198,
+        199
+      ],
+      "rubric": {
+        "all_of": [
+          [
+            "selden"
+          ],
+          [
+            "brother"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "beryl",
+      "question": "What is the true relationship between Stapleton and the woman who lives with him as his sister?",
+      "answer": "She is his wife, posing as his sister.",
+      "chapters": [
+        12
+      ],
+      "evidence": [
+        269
+      ],
+      "rubric": {
+        "all_of": [
+          [
+            "wife",
+            "married"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "glow",
+      "question": "What had been put on the hound to make it glow in the dark?",
+      "answer": "Phosphorus (a cunning preparation of it).",
+      "chapters": [
+        14
+      ],
+      "evidence": [
+        323
+      ],
+      "rubric": {
+        "all_of": [
+          [
+            "phosphor"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "letter_ll",
+      "question": "Who wrote the letter signed 'L. L.' that brought Sir Charles to the gate on the night he died, and who had persuaded her to write it?",
+      "answer": "Laura Lyons of Coombe Tracey wrote it (chapters 10-11); Stapleton had persuaded her, having promised to marry her (chapter 13).",
+      "chapters": [
+        10,
+        11,
+        13
+      ],
+      "evidence": [
+        222,
+        235,
+        306
+      ],
+      "needs_multiple_chapters": true,
+      "rubric": {
+        "all_of": [
+          [
+            "laura lyons",
+            "mrs. lyons",
+            "lyons"
+          ],
+          [
+            "stapleton"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "stapleton_identity",
+      "question": "Who is Stapleton really, and why did he want Sir Henry dead?",
+      "answer": "He is a Baskerville - the son of Rodger Baskerville, Sir Charles's younger brother - and wanted to inherit the Baskerville estate and title (portrait in chapter 13, Holmes's explanation in chapter 15).",
+      "chapters": [
+        13,
+        15
+      ],
+      "evidence": [
+        297,
+        340
+      ],
+      "needs_multiple_chapters": true,
+      "rubric": {
+        "all_of": [
+          [
+            "rodger",
+            "son of",
+            "nephew",
+            "cousin",
+            "is a baskerville",
+            "a baskerville himself",
+            "baskerville by birth",
+            "related"
+          ],
+          [
+            "inherit",
+            "estate",
+            "heir",
+            "succession",
+            "title",
+            "fortune",
+            "next in line"
+          ]
+        ]
+      }
+    }
+  ],
+  "answers": [
+    {
+      "none": {
+        "answer": "The engraving on the walking stick indicates that it was given to Dr. Mortimer by Sir Charles Baskerville.",
+        "prompt_tokens": 82,
+        "output_tokens": 25,
+        "latency_s": 0.2981,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "c.c.h",
+              "charing cross"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "Dr. Mortimer's friends at the C.C.H. (County and City Hospital) gave him the walking stick.",
+        "prompt_tokens": 1150,
+        "output_tokens": 25,
+        "latency_s": 0.4117,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0837,
+        "generate_s": 0.328,
+        "retrieved": [
+          1,
+          0,
+          57,
+          8,
+          31
+        ],
+        "scores": [
+          0.7654,
+          0.7552,
+          0.7335,
+          0.7264,
+          0.7261
+        ],
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "c.c.h"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "In *The Hound of the Baskervilles*, the walking stick that Dr. Mortimer left at Baker Street was given to him by **Sir Henry Baskerville**. The stick was engraved with the initials \"H.B.\" and the name \"Baskerville,\" indicating its ownership by Sir Henry.",
+        "prompt_tokens": 40770,
+        "output_tokens": 64,
+        "latency_s": 4.6131,
+        "input_mode": "token_ids",
+        "documents_seen": 207,
+        "first_document": 157,
+        "last_document": 363,
+        "fraction_seen": 0.5641,
+        "truncated": true,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "c.c.h",
+              "charing cross"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "Sir Charles Baskerville",
+        "prompt_tokens": 88,
+        "memory_tokens": 16,
+        "output_tokens": 5,
+        "embed_s": 1.8999,
+        "generate_s": 0.1152,
+        "latency_s": 2.015,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "c.c.h",
+              "charing cross"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "A large, dark paw print.",
+        "prompt_tokens": 78,
+        "output_tokens": 8,
+        "latency_s": 0.135,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "print"
+          ],
+          "missing": [
+            [
+              "hound",
+              "dog"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "Dr. Mortimer saw fresh footprints near Sir Charles Baskerville's body that he did not mention at the inquest.",
+        "prompt_tokens": 1141,
+        "output_tokens": 27,
+        "latency_s": 0.4243,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0847,
+        "generate_s": 0.3396,
+        "retrieved": [
+          40,
+          31,
+          275,
+          35,
+          30
+        ],
+        "scores": [
+          0.8517,
+          0.819,
+          0.8102,
+          0.7871,
+          0.7774
+        ],
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "footprint",
+            "print"
+          ],
+          "missing": [
+            [
+              "hound",
+              "dog"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "Dr. Mortimer saw a boot near Sir Charles Baskerville's body that he did not mention at the inquest. This boot was significant as it was later identified as belonging to the convict, Selden, and played a crucial role in the unfolding of the mystery.",
+        "prompt_tokens": 40766,
+        "output_tokens": 56,
+        "latency_s": 4.1026,
+        "input_mode": "token_ids",
+        "documents_seen": 207,
+        "first_document": 157,
+        "last_document": 363,
+        "fraction_seen": 0.5641,
+        "truncated": true,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "hound",
+              "dog"
+            ],
+            [
+              "footprint",
+              "print",
+              "track",
+              "mark"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "Footprints",
+        "prompt_tokens": 84,
+        "memory_tokens": 16,
+        "output_tokens": 2,
+        "embed_s": 1.8176,
+        "generate_s": 0.0734,
+        "latency_s": 1.891,
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "footprint",
+            "print"
+          ],
+          "missing": [
+            [
+              "hound",
+              "dog"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "The anonymous warning note was delivered by a man in a long coat who appeared at Sir Henry's hotel room door.",
+        "prompt_tokens": 66,
+        "output_tokens": 24,
+        "latency_s": 0.2786,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "times",
+              "newspaper",
+              "printed words",
+              "cut out",
+              "cut from",
+              "pasted"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "The anonymous warning note was created by an educated individual who attempted to disguise their handwriting by using rough characters and unevenly placed text, suggesting urgency or agitation.",
+        "prompt_tokens": 1172,
+        "output_tokens": 32,
+        "latency_s": 0.4655,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0679,
+        "generate_s": 0.3976,
+        "retrieved": [
+          59,
+          69,
+          72,
+          66,
+          215
+        ],
+        "scores": [
+          0.7261,
+          0.6684,
+          0.654,
+          0.6427,
+          0.6369
+        ],
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "times",
+              "newspaper",
+              "printed words",
+              "cut out",
+              "cut from",
+              "pasted"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "The anonymous warning note that Sir Henry received at his London hotel was made by Stapleton, who had been following him and had sent it through a cabman. The note was written in a disguised hand and contained a warning about the dangers of the moor and the legend of the hound.",
+        "prompt_tokens": 40754,
+        "output_tokens": 60,
+        "latency_s": 4.1897,
+        "input_mode": "token_ids",
+        "documents_seen": 207,
+        "first_document": 157,
+        "last_document": 363,
+        "fraction_seen": 0.5641,
+        "truncated": true,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "times",
+              "newspaper",
+              "printed words",
+              "cut out",
+              "cut from",
+              "pasted"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "It was written in invisible ink.",
+        "prompt_tokens": 72,
+        "memory_tokens": 16,
+        "output_tokens": 7,
+        "embed_s": 1.8116,
+        "generate_s": 0.1224,
+        "latency_s": 1.934,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "times",
+              "newspaper",
+              "printed words",
+              "cut out",
+              "cut from",
+              "pasted"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "The escaped convict is Selden, who is connected to the Barrymores as he is the brother of the murdered man, and his wife, Mrs. Barrymore, is his accomplice.",
+        "prompt_tokens": 72,
+        "output_tokens": 40,
+        "latency_s": 0.4476,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "selden",
+            "brother"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "The escaped convict is Selden, who is Barrymore's brother. He is hiding on the moor and is connected to the Barrymores through familial ties.",
+        "prompt_tokens": 1071,
+        "output_tokens": 34,
+        "latency_s": 0.4809,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0634,
+        "generate_s": 0.4175,
+        "retrieved": [
+          157,
+          197,
+          207,
+          230,
+          219
+        ],
+        "scores": [
+          0.7522,
+          0.6854,
+          0.6823,
+          0.6553,
+          0.6509
+        ],
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "selden",
+            "brother"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "The escaped convict is Selden, the brother of Mrs. Barrymore. He was hiding on the moor because he had been released from prison and was being aided by the Barrymores, who had a guilty conscience over their past relationship with him. They provided him with food and shelter, fearing that if he were",
+        "prompt_tokens": 40760,
+        "output_tokens": 64,
+        "latency_s": 4.2798,
+        "input_mode": "token_ids",
+        "documents_seen": 207,
+        "first_document": 157,
+        "last_document": 363,
+        "fraction_seen": 0.5641,
+        "truncated": true,
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "selden",
+            "brother"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "Sir Charles Barrymore is the escaped convict.",
+        "prompt_tokens": 78,
+        "memory_tokens": 16,
+        "output_tokens": 9,
+        "embed_s": 1.8181,
+        "generate_s": 0.1428,
+        "latency_s": 1.9609,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "selden"
+            ],
+            [
+              "brother"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "Stapleton's woman is not his sister but his wife, and she is actually his cousin, which is a secret he keeps to avoid the stigma of his family's criminal past.",
+        "prompt_tokens": 69,
+        "output_tokens": 38,
+        "latency_s": 0.4381,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "wife"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "The woman who lives with Stapleton as his sister is actually his wife.",
+        "prompt_tokens": 1095,
+        "output_tokens": 16,
+        "latency_s": 0.3004,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0698,
+        "generate_s": 0.2306,
+        "retrieved": [
+          359,
+          268,
+          158,
+          303,
+          143
+        ],
+        "scores": [
+          0.7289,
+          0.7263,
+          0.7024,
+          0.7006,
+          0.6939
+        ],
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "wife"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "The woman who lives with Stapleton as his \"sister\" is actually his wife. She is Beryl Stapleton, and their marriage was a secret arrangement. Stapleton had previously been a schoolmaster in Yorkshire under the name Vandeleur, and he married Beryl Garcia, a woman from Costa Rica. After",
+        "prompt_tokens": 40757,
+        "output_tokens": 64,
+        "latency_s": 4.2799,
+        "input_mode": "token_ids",
+        "documents_seen": 207,
+        "first_document": 157,
+        "last_document": 363,
+        "fraction_seen": 0.5641,
+        "truncated": true,
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "wife",
+            "married"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "They are brother and sister",
+        "prompt_tokens": 75,
+        "memory_tokens": 16,
+        "output_tokens": 5,
+        "embed_s": 1.8093,
+        "generate_s": 0.1029,
+        "latency_s": 1.9121,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "wife",
+              "married"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "A radioactive substance had been put on the hound to make it glow in the dark.",
+        "prompt_tokens": 66,
+        "output_tokens": 19,
+        "latency_s": 0.2264,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "phosphor"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "A mixture of phosphorus was used to make the hound glow in the dark.",
+        "prompt_tokens": 1237,
+        "output_tokens": 18,
+        "latency_s": 0.3109,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0648,
+        "generate_s": 0.2461,
+        "retrieved": [
+          333,
+          322,
+          318,
+          205,
+          320
+        ],
+        "scores": [
+          0.6674,
+          0.6493,
+          0.6368,
+          0.6049,
+          0.6016
+        ],
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "phosphor"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "The hound was daubed with a luminous mixture, likely a phosphorus-based substance, which caused it to glow in the dark. This was part of Stapleton's plan to create the illusion of a supernatural creature and instill fear in his victims.",
+        "prompt_tokens": 40754,
+        "output_tokens": 54,
+        "latency_s": 4.0962,
+        "input_mode": "token_ids",
+        "documents_seen": 207,
+        "first_document": 157,
+        "last_document": 363,
+        "fraction_seen": 0.5641,
+        "truncated": true,
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "phosphor"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "Phosphorus",
+        "prompt_tokens": 72,
+        "memory_tokens": 16,
+        "output_tokens": 3,
+        "embed_s": 1.8196,
+        "generate_s": 0.076,
+        "latency_s": 1.8957,
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "phosphor"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "The letter was written by Mrs. Inglethorp, and she was persuaded to write it by her husband, Sir Charles.",
+        "prompt_tokens": 82,
+        "output_tokens": 27,
+        "latency_s": 0.3134,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "laura lyons",
+              "mrs. lyons",
+              "lyons"
+            ],
+            [
+              "stapleton"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "The letter signed \"L. L.\" was written by Mrs. Laura Lyons, who was persuaded to write it by James Mortimer.",
+        "prompt_tokens": 1159,
+        "output_tokens": 28,
+        "latency_s": 0.4121,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.0611,
+        "generate_s": 0.351,
+        "retrieved": [
+          222,
+          239,
+          31,
+          30,
+          345
+        ],
+        "scores": [
+          0.7409,
+          0.6729,
+          0.6474,
+          0.6366,
+          0.6325
+        ],
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "laura lyons",
+            "lyons"
+          ],
+          "missing": [
+            [
+              "stapleton"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "The letter signed \"L. L.\" that brought Sir Charles to the gate on the night he died was written by Mrs. Laura Lyons. She was persuaded to write it by Stapleton, who had orchestrated the plan to lure Sir Charles to his death.",
+        "prompt_tokens": 40770,
+        "output_tokens": 52,
+        "latency_s": 4.0555,
+        "input_mode": "token_ids",
+        "documents_seen": 207,
+        "first_document": 157,
+        "last_document": 363,
+        "fraction_seen": 0.5641,
+        "truncated": true,
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "laura lyons",
+            "lyons",
+            "stapleton"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "Lady Laura, persuaded by Dr. Roylott",
+        "prompt_tokens": 88,
+        "memory_tokens": 16,
+        "output_tokens": 10,
+        "embed_s": 1.829,
+        "generate_s": 0.1518,
+        "latency_s": 1.9807,
+        "rubric": {
+          "pass": false,
+          "matched": [],
+          "missing": [
+            [
+              "laura lyons",
+              "mrs. lyons",
+              "lyons"
+            ],
+            [
+              "stapleton"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    },
+    {
+      "none": {
+        "answer": "Stapleton is really a criminal who faked his death to inherit the money, and he wanted Sir Henry dead to claim the estate.",
+        "prompt_tokens": 65,
+        "output_tokens": 29,
+        "latency_s": 0.3372,
+        "input_mode": "token_ids",
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "inherit",
+            "estate"
+          ],
+          "missing": [
+            [
+              "rodger",
+              "son of",
+              "nephew",
+              "cousin",
+              "is a baskerville",
+              "a baskerville himself",
+              "baskerville by birth",
+              "related"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "rag": {
+        "answer": "Stapleton is the real murderer who deceived everyone by pretending to be a relative. He wanted Sir Henry dead to inherit the money and property, using his wife as an accomplice in the plan.",
+        "prompt_tokens": 1096,
+        "output_tokens": 41,
+        "latency_s": 0.5522,
+        "input_mode": "token_ids",
+        "retrieve_s": 0.064,
+        "generate_s": 0.4882,
+        "retrieved": [
+          342,
+          182,
+          268,
+          359,
+          357
+        ],
+        "scores": [
+          0.7942,
+          0.7924,
+          0.7769,
+          0.775,
+          0.7642
+        ],
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "inherit"
+          ],
+          "missing": [
+            [
+              "rodger",
+              "son of",
+              "nephew",
+              "cousin",
+              "is a baskerville",
+              "a baskerville himself",
+              "baskerville by birth",
+              "related"
+            ]
+          ],
+          "forbidden": []
+        }
+      },
+      "full": {
+        "answer": "Stapleton is the escaped convict Selden, who is the illegitimate son of Rodger Baskerville, the younger brother of Sir Charles. He is also the husband of Mrs. Stapleton, who is actually his wife, not his sister as he pretended. Stapleton wanted Sir Henry dead to inherit the B",
+        "prompt_tokens": 40753,
+        "output_tokens": 64,
+        "latency_s": 4.3122,
+        "input_mode": "token_ids",
+        "documents_seen": 207,
+        "first_document": 157,
+        "last_document": 363,
+        "fraction_seen": 0.5641,
+        "truncated": true,
+        "rubric": {
+          "pass": true,
+          "matched": [
+            "rodger",
+            "son of",
+            "inherit"
+          ],
+          "missing": [],
+          "forbidden": []
+        }
+      },
+      "memorilla": {
+        "answer": "He is the heir to the family estate, and he wanted to inherit the money.",
+        "prompt_tokens": 71,
+        "memory_tokens": 16,
+        "output_tokens": 17,
+        "embed_s": 1.8239,
+        "generate_s": 0.2392,
+        "latency_s": 2.0631,
+        "rubric": {
+          "pass": false,
+          "matched": [
+            "inherit",
+            "estate",
+            "heir"
+          ],
+          "missing": [
+            [
+              "rodger",
+              "son of",
+              "nephew",
+              "cousin",
+              "is a baskerville",
+              "a baskerville himself",
+              "baskerville by birth",
+              "related"
+            ]
+          ],
+          "forbidden": []
+        }
+      }
+    }
+  ],
+  "hardware": {
+    "cpu": "Intel(R) Xeon(R) Platinum 8352Y CPU @ 2.20GHz",
+    "ram_gib": 125.9,
+    "gpu": {
+      "name": "NVIDIA H100 PCIe",
+      "memory_mib": 81559,
+      "driver": "580.126.09",
+      "compute_capability": "9.0"
+    }
+  },
+  "software": {
+    "python": "3.11.14",
+    "os": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+    "torch": "2.7.0+cu128",
+    "torch_cuda": "12.8",
+    "vllm": "0.9.1",
+    "transformers": "4.53.3",
+    "xformers": "0.0.30",
+    "memorilla": "1.0.0",
+    "memorilla_commit": "d8f18891a50bf33c18f04fe5167c22f51e58c9cd",
+    "vllm_use_v1": "0",
+    "vllm_attention_backend": null
+  },
+  "git": {
+    "commit": "348c3f3036300684ba00cb556d05674b304e5563",
+    "dirty": true
+  },
+  "load": {
+    "stages_s": {
+      "files": 0.23,
+      "memory_module": 1.45,
+      "encoder": 15.96,
+      "decoder": 42.22
+    },
+    "checkpoint": "stage3",
+    "num_memories": 16,
+    "kv_cache_tokens": {
+      "decoder": 223968,
+      "encoder": null
+    }
+  },
+  "warmup": {
+    "none": 0.1029,
+    "rag": 0.1695,
+    "full": 3.2325,
+    "memorilla": 2.2132
+  },
+  "vram": {
+    "total_mib": 81559,
+    "baseline_used_mib": 480,
+    "peak_used_mib": 61213,
+    "peak_demo_mib": 60733,
+    "other_processes_mib": 0
+  }
+}

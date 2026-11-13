@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "demo": "gpu_check",
+  "timestamp": "2026-11-13T21:57:40+00:00",
+  "hardware": {
+    "cpu": "Intel(R) Xeon(R) Platinum 8352Y CPU @ 2.20GHz",
+    "ram_gib": 125.9,
+    "gpu": {
+      "name": "NVIDIA H100 PCIe",
+      "memory_mib": 81559,
+      "driver": "580.126.09",
+      "compute_capability": "9.0"
+    }
+  },
+  "software": {
+    "python": "3.11.14",
+    "os": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+    "torch": "2.7.0+cu128",
+    "torch_cuda": "12.8",
+    "vllm": "0.9.1",
+    "transformers": "4.53.3",
+    "xformers": "0.0.30",
+    "memorilla": "1.0.0",
+    "memorilla_commit": "d8f18891a50bf33c18f04fe5167c22f51e58c9cd",
+    "vllm_use_v1": null,
+    "vllm_attention_backend": null
+  },
+  "git": {
+    "commit": "348c3f3036300684ba00cb556d05674b304e5563",
+    "dirty": true
+  },
+  "checks": [
+    {
+      "check": "GPU memory health (ECC, row remapping)",
+      "ok": true,
+      "detail": "healthy: remapped rows 0+0, uncorrectable ECC since boot 0"
+    },
+    {
+      "check": "torch build has this GPU's arch",
+      "ok": true,
+      "detail": "torch 2.7.0+cu128 (CUDA 12.8) includes sm_90"
+    },
+    {
+      "check": "torch CUDA kernels",
+      "ok": true,
+      "detail": "bf16 matmul/softmax ok (1023.9), SDPA ok (1, 8, 128, 128)"
+    },
+    {
+      "check": "vLLM compiled ops (_C)",
+      "ok": true,
+      "detail": "vllm 0.9.1: _C rms_norm ok (max err 0.0147)"
+    },
+    {
+      "check": "vLLM FlashAttention",
+      "ok": true,
+      "detail": "vllm_flash_attn varlen ok (64, 8, 128)"
+    },
+    {
+      "check": "xFormers attention",
+      "ok": true,
+      "detail": "xformers 0.0.30 memory_efficient_attention ok (1, 64, 8, 128)"
+    },
+    {
+      "check": "Triton JIT",
+      "ok": true,
+      "detail": "triton 3.3.0 JIT kernel ok"
+    }
+  ]
+}
