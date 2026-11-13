@@ -77,8 +77,15 @@ All six GPU checks pass (`results/gpu_check-2026-11-13-204031.json`). Load time:
   suggests a lentil stew but never says vegan. `stage3` behaves the same way. One vector per chat keeps the gist, not
   details, and the signal fades as the collection grows; on data unlike PersonaMem it falls back to persona clichés.
 - Rubric fix: the first gym rubric accepted "after work", which matched a generic heading ("Midday (Lunchtime or After
-  Work)") in the no-memory answer. It now requires a reference to the shift. Fixed before any final run; the test run
-  is kept and rescored.
+  Work)") in the no-memory answer. It now requires a reference to the shift. Fixed before any final run. The test-run
+  file is kept unchanged, so it (and a replay of it) still shows the original, wrong ✓ for no memory on the gym
+  question; the table above is the rescore with the corrected rubric.
+
+Dataset notes:
+- Every PersonaMem-v2 document is a single exchange (`User: ...\nAssistant: ...`). The 13 key chats (clues,
+  lookalikes, control) copy that exactly; the 137 filler chats have two exchanges, i.e. the same format continued
+  once. Filler chats were written under a banned-word list so no clue topic leaks outside its one chat.
+
 
 ## Demo 1b: PersonaMem-v2 sample - everyone at or below chance
 
@@ -86,11 +93,6 @@ All six GPU checks pass (`results/gpu_check-2026-11-13-204031.json`). Load time:
 (139, 684, 1067, 2374, 2512, 2933, 3106, 3471, 4342, 4849), scored with upstream's nearest-option metric (4 options,
 chance = 25%): no memory 1/10, RAG 1/10, full context 1/10, **Memorilla 2/10**. On most rows all four methods picked
 the same wrong option, so at this sample size the metric mostly measures answer style. Too small to rank methods.
-
-Dataset notes:
-- Every PersonaMem-v2 document is a single exchange (`User: ...\nAssistant: ...`). The 13 key chats (clues,
-  lookalikes, control) copy that exactly; the 137 filler chats have two exchanges, i.e. the same format continued
-  once. Filler chats were written under a banned-word list so no clue topic leaks outside its one chat.
 
 ## Demo 2: the speed race - the latency claim holds (answering only)
 
