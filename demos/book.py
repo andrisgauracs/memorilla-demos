@@ -216,6 +216,7 @@ def run_live(config: dict[str, Any], console: Any, auto: float | None) -> int:
         for index, q in enumerate(questions):
             answers: dict[str, dict[str, Any]] = {}
             data["answers"].append(answers)
+            save_results(results_path, data)
 
             def produce(key: str, q: dict[str, Any] = q, answers: dict[str, Any] = answers) -> dict[str, Any]:
                 with capture_logs(log_path):
@@ -227,6 +228,7 @@ def run_live(config: dict[str, Any], console: Any, auto: float | None) -> int:
                                   "prompt_tokens": 0, "latency_s": 0.0}
                 result["rubric"] = score(result["answer"], q["rubric"])
                 answers[key] = result
+                save_results(results_path, data)  # after every answer, so the dashboard fills panels one by one
                 return result
 
             show_question(data, index, console, produce)

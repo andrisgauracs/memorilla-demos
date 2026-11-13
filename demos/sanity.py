@@ -136,6 +136,7 @@ def run_live(config: dict[str, Any], console: Any) -> int:
             result["warmup_latency_s"] = warm[key]["latency_s"]
             result["same_as_warmup"] = result["answer"] == warm[key]["answer"]
             methods[key] = result
+            save_results(results_path, data)  # the dashboard fills panels one by one
             return result
 
         data["methods"] = methods

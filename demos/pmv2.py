@@ -186,6 +186,7 @@ def run_live(config: dict[str, Any], console: Any, auto: float | None) -> int:
                                  "num_choices": len([c for c in choices if c.strip()]), "choices": choices})
             answers: dict[str, dict[str, Any]] = {}
             data["answers"].append(answers)
+            save_results(results_path, data)
 
             def produce(key: str, item: Any = item, docs: list[str] = docs, vectors: Any = vectors,
                         choices: list[str] = choices, answers: dict[str, Any] = answers) -> dict[str, Any]:
@@ -202,6 +203,7 @@ def run_live(config: dict[str, Any], console: Any, auto: float | None) -> int:
                         result = methods.run_memorilla(model, system_prompt, q, docs, max_new)
                     result["rubric"] = choice_score(model, result["answer"], choices, item["answer"])
                 answers[key] = result
+                save_results(results_path, data)  # after every answer, so the dashboard fills panels one by one
                 return result
 
             show_row(data, index, console, produce)
