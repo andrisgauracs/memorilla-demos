@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "demo": "diagnostic-clue",
+  "checkpoint": "stage3",
+  "timestamp": "2026-11-13T20:51:13+00:00",
+  "config": {
+    "profile": "h100",
+    "seed": 23,
+    "models": {
+      "decoder": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      },
+      "encoder": {
+        "repo": "Qwen/Qwen3-Embedding-4B",
+        "revision": "5cf2132abc99cad020ac570b19d031efec650f2b"
+      },
+      "memorilla": {
+        "repo": "memorilla/Memorilla-Qwen3-8B",
+        "revision": "f6b15af56aa687861c8d2d03b1cd8f7979881361"
+      }
+    },
+    "datasets": {
+      "memorilla_data": {
+        "repo": "memorilla/Memorilla-Data",
+        "revision": "c6b0d7eea65659254115ed31dd26869eb6dc0586"
+      }
+    },
+    "paths": {
+      "memorilla_data": ".cache/memorilla-data",
+      "model_cache": null,
+      "results": "results",
+      "logs": "logs"
+    },
+    "generation": {
+      "max_new_tokens": 256,
+      "temperature": 0.0
+    },
+    "display": {
+      "width": 120,
+      "panel_chars": 520,
+      "replay_speed": 1.0
+    },
+    "sanity": {
+      "checkpoint": "pmv2",
+      "config": "pmv2",
+      "split": "test",
+      "row": 73,
+      "system_prompt": "PERSONA_PROMPT",
+      "rubric": {
+        "all_of": [
+          [
+            "diabet"
+          ]
+        ]
+      }
+    },
+    "clue": {
+      "checkpoint": "pmv2",
+      "system_prompt": "PERSONA_PROMPT",
+      "top_k": 5,
+      "warmup_question": "Any tips for keeping a houseplant alive?"
+    },
+    "speed": {
+      "checkpoint": "stage3",
+      "system_prompt": "PERSONA_PROMPT",
+      "question": "Why does Dr. Mortimer come to see Sherlock Holmes, and what is he afraid of?",
+      "sizes": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128,
+        256,
+        512
+      ],
+      "max_new_tokens": 32,
+      "warmup_runs": 1,
+      "timed_runs": 3,
+      "native_window": 32768,
+      "yarn_window": 131072,
+      "yarn_factor": 4.0,
+      "full_context_gpu_memory_utilization": 0.85
+    },
+    "book": {
+      "checkpoint": "stage3",
+      "memorilla_system_prompt": "PERSONA_PROMPT",
+      "baseline_system_prompt": "BRIEF_ANSWER_PROMPT",
+      "max_new_tokens": 64,
+      "top_k": 5,
+      "truncate_keep": "end",
+      "warmup_question": "Who is Sherlock Holmes's friend and chronicler?"
+    },
+    "encoder": {
+      "gpu_memory_utilization": 0.25,
+      "max_model_len": 4096,
+      "engine_extra": {}
+    },
+    "decoder": {
+      "gpu_memory_utilization": 0.6,
+      "max_model_len": 40960,
+      "engine_extra": {}
+    },
+    "attention_backend": null
+  },
+  "hardware": {
+    "cpu": "Intel(R) Xeon(R) Platinum 8352Y CPU @ 2.20GHz",
+    "ram_gib": 125.9,
+    "gpu": {
+      "name": "NVIDIA H100 PCIe",
+      "memory_mib": 81559,
+      "driver": "580.126.09",
+      "compute_capability": "9.0"
+    }
+  },
+  "software": {
+    "python": "3.11.14",
+    "os": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+    "torch": "2.7.0+cu128",
+    "torch_cuda": "12.8",
+    "vllm": "0.9.1",
+    "transformers": "4.53.3",
+    "xformers": "0.0.30",
+    "memorilla": "1.0.0",
+    "memorilla_commit": "d8f18891a50bf33c18f04fe5167c22f51e58c9cd",
+    "vllm_use_v1": "0",
+    "vllm_attention_backend": null
+  },
+  "git": {
+    "commit": null,
+    "dirty": true
+  },
+  "load": {
+    "stages_s": {
+      "files": 0.24,
+      "memory_module": 1.58,
+      "encoder": 18.18,
+      "decoder": 58.79
+    },
+    "checkpoint": "stage3",
+    "num_memories": 16,
+    "kv_cache_tokens": {
+      "decoder": 223968,
+      "encoder": null
+    }
+  },
+  "rows": [
+    {
+      "question": "control",
+      "condition": "only the clue chat",
+      "num_docs": 1,
+      "pass": false,
+      "answer": "My sister's name is Priya, and her birthday is on June 15th.",
+      "prompt_tokens": 69,
+      "memory_tokens": 16,
+      "output_tokens": 19,
+      "embed_s": 0.1431,
+      "generate_s": 0.3621,
+      "latency_s": 0.5052
+    },
+    {
+      "question": "control",
+      "condition": "clue + 4 others",
+      "num_docs": 5,
+      "pass": false,
+      "answer": "My sister’s name is Emily, and her birthday is on June 15th.",
+      "prompt_tokens": 69,
+      "memory_tokens": 16,
+      "output_tokens": 18,
+      "embed_s": 0.069,
+      "generate_s": 0.2421,
+      "latency_s": 0.3111
+    },
+    {
+      "question": "control",
+      "condition": "all 150",
+      "num_docs": 150,
+      "pass": false,
+      "answer": "My sister's name is Emily, and her birthday is on April 12th.",
+      "prompt_tokens": 69,
+      "memory_tokens": 16,
+      "output_tokens": 18,
+      "embed_s": 0.7468,
+      "generate_s": 0.2492,
+      "latency_s": 0.9959
+    },
+    {
+      "question": "parents_dinner",
+      "condition": "only the clue chat",
+      "num_docs": 1,
+      "pass": false,
+      "answer": "Chicken and dumplings",
+      "prompt_tokens": 66,
+      "memory_tokens": 16,
+      "output_tokens": 4,
+      "embed_s": 0.0767,
+      "generate_s": 0.0911,
+      "latency_s": 0.1679
+    },
+    {
+      "question": "parents_dinner",
+      "condition": "clue + 4 others",
+      "num_docs": 5,
+      "pass": false,
+      "answer": "Make a comforting one-pot meal like Chicken and Rice Casserole, then serve it with a simple green salad and garlic bread for a cozy, easy dinner.",
+      "prompt_tokens": 66,
+      "memory_tokens": 16,
+      "output_tokens": 33,
+      "embed_s": 0.0726,
+      "generate_s": 0.4131,
+      "latency_s": 0.4857
+    },
+    {
+      "question": "parents_dinner",
+      "condition": "all 150",
+      "num_docs": 150,
+      "pass": false,
+      "answer": "You could make a simple, comforting meal like grilled chicken with roasted vegetables and a side of rice, keeping it light and easy to prepare.",
+      "prompt_tokens": 66,
+      "memory_tokens": 16,
+      "output_tokens": 28,
+      "embed_s": 0.7081,
+      "generate_s": 0.3593,
+      "latency_s": 1.0674
+    }
+  ]
+}

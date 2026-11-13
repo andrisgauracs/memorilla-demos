@@ -10,6 +10,7 @@ Three filmable, reproducible demos of [Memorilla](https://github.com/snap-stanfo
 | --- | --- |
 | `make sanity` | The README's own example: PersonaMem-v2 test row 73, the breakfast question, `pmv2` checkpoint. |
 | `make demo-clue` | **The Buried Clue.** 150 chats from a fictional user; can a model connect a question to a fact buried in one unrelated chat? No memory vs RAG top-5 vs full context vs Memorilla. |
+| `make demo-pmv2` | **Demo 1b.** The same four methods on 10 real PersonaMem-v2 test rows (fixed by seed before any run), scored with upstream's own metric. |
 | `make demo-speed` | **The speed race.** Answer latency as the collection grows from 1 to 512 passages of 250 tokens (128K tokens). |
 | `make demo-book` | **A book too big for the context window.** Plot questions about *The Hound of the Baskervilles* (72K tokens). |
 
@@ -18,7 +19,7 @@ Three filmable, reproducible demos of [Memorilla](https://github.com/snap-stanfo
 
 ## Setup
 
-Linux, one NVIDIA GPU with 80 GB (H100 SXM recommended), Python is installed for you. Everything (uv, Python 3.11, the
+Linux, one NVIDIA GPU with 80 GB (H100 recommended; the test runs used an H100 PCIe), Python is installed for you. Everything (uv, Python 3.11, the
 virtualenv, model weights, caches) goes inside the repo directory, so deleting it removes everything.
 
 ```bash
@@ -96,6 +97,14 @@ questions), so the marks are reproducible. Each panel shows the tokens the LLM a
   All use `PERSONA_PROMPT`. RAG's latency includes embedding the question and searching; the one-off index build is
   recorded separately. Memorilla's latency includes embedding all 150 chats, as `MemoryVLLM.answer` does, and the
   panel splits it into embedding and answering.
+
+### Demo 1b: PersonaMem-v2 sample
+
+The four methods of Demo 1 on test rows drawn by `random.Random(23).sample(range(5000), 10)` (fixed in `config.yaml`
+before any run), with the `pmv2` checkpoint and `PERSONA_PROMPT` for all. Each answer is scored with upstream's
+PersonaMem-v2 metric (`memorilla.metrics`): the answer and each of the row's answer options are embedded with
+Qwen3-Embedding-4B, and the answer is correct when its nearest option is the reference. The panels show the nearest
+option and the correct one.
 
 ### The speed race (`data/speed/`)
 

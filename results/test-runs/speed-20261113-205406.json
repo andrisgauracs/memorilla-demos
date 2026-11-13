@@ -1,0 +1,532 @@
+{
+  "schema_version": 1,
+  "demo": "speed",
+  "timestamp": "2026-11-13T20:54:06+00:00",
+  "config": {
+    "profile": "h100",
+    "seed": 23,
+    "models": {
+      "decoder": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      },
+      "encoder": {
+        "repo": "Qwen/Qwen3-Embedding-4B",
+        "revision": "5cf2132abc99cad020ac570b19d031efec650f2b"
+      },
+      "memorilla": {
+        "repo": "memorilla/Memorilla-Qwen3-8B",
+        "revision": "f6b15af56aa687861c8d2d03b1cd8f7979881361"
+      }
+    },
+    "datasets": {
+      "memorilla_data": {
+        "repo": "memorilla/Memorilla-Data",
+        "revision": "c6b0d7eea65659254115ed31dd26869eb6dc0586"
+      }
+    },
+    "paths": {
+      "memorilla_data": ".cache/memorilla-data",
+      "model_cache": null,
+      "results": "results",
+      "logs": "logs"
+    },
+    "generation": {
+      "max_new_tokens": 256,
+      "temperature": 0.0
+    },
+    "display": {
+      "width": 120,
+      "panel_chars": 520,
+      "replay_speed": 1.0
+    },
+    "sanity": {
+      "checkpoint": "pmv2",
+      "config": "pmv2",
+      "split": "test",
+      "row": 73,
+      "system_prompt": "PERSONA_PROMPT",
+      "rubric": {
+        "all_of": [
+          [
+            "diabet"
+          ]
+        ]
+      }
+    },
+    "clue": {
+      "checkpoint": "pmv2",
+      "system_prompt": "PERSONA_PROMPT",
+      "top_k": 5,
+      "warmup_question": "Any tips for keeping a houseplant alive?"
+    },
+    "speed": {
+      "checkpoint": "stage3",
+      "system_prompt": "PERSONA_PROMPT",
+      "question": "Why does Dr. Mortimer come to see Sherlock Holmes, and what is he afraid of?",
+      "sizes": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128,
+        256,
+        512
+      ],
+      "max_new_tokens": 32,
+      "warmup_runs": 1,
+      "timed_runs": 3,
+      "native_window": 32768,
+      "yarn_window": 131072,
+      "yarn_factor": 4.0,
+      "full_context_gpu_memory_utilization": 0.85
+    },
+    "book": {
+      "checkpoint": "stage3",
+      "memorilla_system_prompt": "PERSONA_PROMPT",
+      "baseline_system_prompt": "BRIEF_ANSWER_PROMPT",
+      "max_new_tokens": 64,
+      "top_k": 5,
+      "truncate_keep": "end",
+      "warmup_question": "Who is Sherlock Holmes's friend and chronicler?"
+    },
+    "encoder": {
+      "gpu_memory_utilization": 0.25,
+      "max_model_len": 4096,
+      "engine_extra": {}
+    },
+    "decoder": {
+      "gpu_memory_utilization": 0.6,
+      "max_model_len": 40960,
+      "engine_extra": {}
+    },
+    "attention_backend": null
+  },
+  "hardware": {
+    "cpu": "Intel(R) Xeon(R) Platinum 8352Y CPU @ 2.20GHz",
+    "ram_gib": 125.9,
+    "gpu": {
+      "name": "NVIDIA H100 PCIe",
+      "memory_mib": 81559,
+      "driver": "580.126.09",
+      "compute_capability": "9.0"
+    }
+  },
+  "software": {
+    "python": "3.11.14",
+    "os": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+    "torch": "2.7.0+cu128",
+    "torch_cuda": "12.8",
+    "vllm": "0.9.1",
+    "transformers": "4.53.3",
+    "xformers": "0.0.30",
+    "memorilla": "1.0.0",
+    "memorilla_commit": "d8f18891a50bf33c18f04fe5167c22f51e58c9cd",
+    "vllm_use_v1": null,
+    "vllm_attention_backend": null
+  },
+  "git": {
+    "commit": null,
+    "dirty": true
+  },
+  "corpus": {
+    "file": "data/speed/passages.json",
+    "total_tokens": 128000,
+    "sources": [
+      {
+        "title": "The Hound of the Baskervilles",
+        "file": "data/hound/raw/pg2852.txt",
+        "tokens": 72161,
+        "windows": 288,
+        "sha256": "aea75dfb3977a0a0222f838593c45dfbcb1af9fbb7bf5b60b1f13d5e452cbcf7"
+      },
+      {
+        "title": "The Sign of the Four",
+        "file": "data/speed/raw/pg2097.txt",
+        "tokens": 54185,
+        "windows": 216,
+        "sha256": "4cdea89cf6cd2567a556d0e6901edb89949dd79e200dbaf4ced4cabf1d5d2c26"
+      },
+      {
+        "title": "A Study in Scarlet",
+        "file": "data/speed/raw/pg244.txt",
+        "tokens": 54313,
+        "windows": 217,
+        "sha256": "8bbec71f9fa9c2acc9afe9be70560ca5f65c1bc95ef5af8252e9097f8d012497"
+      }
+    ]
+  },
+  "sizes": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512
+  ],
+  "results": [
+    {
+      "series": "full",
+      "size": 1,
+      "prompt_tokens": 307,
+      "window": 32768,
+      "yarn_factor": null,
+      "status": "ok",
+      "latency_s": 0.3719,
+      "runs_s": [
+        0.3718,
+        0.3724,
+        0.3719
+      ],
+      "output_tokens": 32,
+      "answer": "Dr. James Mortimer comes to see Sherlock Holmes because he has a personal connection to the stick that Watson found on the hearth-rug. The stick is"
+    },
+    {
+      "series": "full",
+      "size": 2,
+      "prompt_tokens": 558,
+      "window": 32768,
+      "yarn_factor": null,
+      "status": "ok",
+      "latency_s": 0.3765,
+      "runs_s": [
+        0.3765,
+        0.3774,
+        0.3762
+      ],
+      "output_tokens": 32,
+      "answer": "In the first chapter of *The Hound of the Baskervilles*, Dr. James Mortimer visits Sherlock Holmes, but Holmes and Dr. Watson do"
+    },
+    {
+      "series": "full",
+      "size": 4,
+      "prompt_tokens": 1060,
+      "window": 32768,
+      "yarn_factor": null,
+      "status": "ok",
+      "latency_s": 0.3917,
+      "runs_s": [
+        0.3919,
+        0.3907,
+        0.3917
+      ],
+      "output_tokens": 32,
+      "answer": "Based on the information provided in the passage, Dr. James Mortimer is a country practitioner who has been presented with a cane by his friends at the Charing"
+    },
+    {
+      "series": "full",
+      "size": 8,
+      "prompt_tokens": 2064,
+      "window": 32768,
+      "yarn_factor": null,
+      "status": "ok",
+      "latency_s": 0.4322,
+      "runs_s": [
+        0.4319,
+        0.4322,
+        0.4329
+      ],
+      "output_tokens": 32,
+      "answer": "Dr. James Mortimer comes to see Sherlock Holmes because he is seeking help with a mysterious case involving a missing person—his old friend and colleague, Dr."
+    },
+    {
+      "series": "full",
+      "size": 16,
+      "prompt_tokens": 4071,
+      "window": 32768,
+      "yarn_factor": null,
+      "status": "ok",
+      "latency_s": 0.5192,
+      "runs_s": [
+        0.5192,
+        0.5192,
+        0.5188
+      ],
+      "output_tokens": 32,
+      "answer": "Dr. James Mortimer comes to see Sherlock Holmes because he is confronted with a serious and extraordinary problem that he believes only Holmes can solve. He is afraid of"
+    },
+    {
+      "series": "full",
+      "size": 32,
+      "prompt_tokens": 8086,
+      "window": 32768,
+      "yarn_factor": null,
+      "status": "ok",
+      "latency_s": 0.7042,
+      "runs_s": [
+        0.7042,
+        0.7029,
+        0.7045
+      ],
+      "output_tokens": 32,
+      "answer": "Dr. James Mortimer comes to see Sherlock Holmes because he is deeply troubled by the mysterious and seemingly supernatural events surrounding the death of Sir Charles Baskerville."
+    },
+    {
+      "series": "full",
+      "size": 64,
+      "prompt_tokens": 16116,
+      "window": 32768,
+      "yarn_factor": null,
+      "status": "ok",
+      "latency_s": 1.5123,
+      "runs_s": [
+        1.5123,
+        1.514,
+        1.4986
+      ],
+      "output_tokens": 32,
+      "answer": "Dr. James Mortimer comes to see Sherlock Holmes because he is deeply concerned about the mysterious and dangerous legacy of the Baskerville family, particularly the legend of"
+    },
+    {
+      "series": "full",
+      "size": 128,
+      "prompt_tokens": 32173,
+      "window": 32768,
+      "yarn_factor": null,
+      "status": "ok",
+      "latency_s": 2.6553,
+      "runs_s": [
+        2.6553,
+        2.6628,
+        2.6393
+      ],
+      "output_tokens": 32,
+      "answer": "Dr. James Mortimer comes to see Sherlock Holmes because he is deeply concerned about the mysterious and dangerous situation surrounding the Baskerville family, particularly the death of"
+    },
+    {
+      "series": "full",
+      "size": 256,
+      "prompt_tokens": 64291,
+      "window": 131072,
+      "yarn_factor": 4.0,
+      "status": "ok",
+      "latency_s": 6.6715,
+      "runs_s": [
+        6.6232,
+        6.6715,
+        6.7093
+      ],
+      "output_tokens": 32,
+      "answer": "Dr. James Mortimer comes to see Sherlock Holmes because he is deeply concerned about the mysterious circumstances surrounding the death of Sir Charles Baskerville and the strange occurrences"
+    },
+    {
+      "series": "full",
+      "size": 512,
+      "prompt_tokens": 128511,
+      "window": 131072,
+      "yarn_factor": 4.0,
+      "status": "ok",
+      "latency_s": 19.4292,
+      "runs_s": [
+        19.4292,
+        19.4109,
+        19.4582
+      ],
+      "output_tokens": 32,
+      "answer": "Dr. James Mortimer visits Sherlock Holmes because he is concerned about the mysterious death of Sir Charles Baskerville and the strange legend of the \"Hound of"
+    },
+    {
+      "series": "memorilla",
+      "size": 1,
+      "status": "ok",
+      "latency_s": 0.1989,
+      "embed_s": 0.0496,
+      "generate_s": 0.1491,
+      "runs_s": [
+        0.1989,
+        0.1995,
+        0.1974
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 10,
+      "answer": "He is afraid of the consequences of his actions."
+    },
+    {
+      "series": "memorilla",
+      "size": 2,
+      "status": "ok",
+      "latency_s": 0.2008,
+      "embed_s": 0.0505,
+      "generate_s": 0.1504,
+      "runs_s": [
+        0.2109,
+        0.2008,
+        0.2003
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 10,
+      "answer": "He is afraid of the consequences of his actions."
+    },
+    {
+      "series": "memorilla",
+      "size": 4,
+      "status": "ok",
+      "latency_s": 0.2382,
+      "embed_s": 0.0544,
+      "generate_s": 0.1839,
+      "runs_s": [
+        0.2366,
+        0.2414,
+        0.2382
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 13,
+      "answer": "Dr. Mortimer is afraid of the consequences of his actions."
+    },
+    {
+      "series": "memorilla",
+      "size": 8,
+      "status": "ok",
+      "latency_s": 0.2415,
+      "embed_s": 0.077,
+      "generate_s": 0.1644,
+      "runs_s": [
+        0.2369,
+        0.2415,
+        0.2423
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 11,
+      "answer": "He is afraid that his patient is going to die."
+    },
+    {
+      "series": "memorilla",
+      "size": 16,
+      "status": "ok",
+      "latency_s": 0.2767,
+      "embed_s": 0.1228,
+      "generate_s": 0.1532,
+      "runs_s": [
+        0.2773,
+        0.2767,
+        0.2747
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 10,
+      "answer": "He is afraid of the consequences of his actions."
+    },
+    {
+      "series": "memorilla",
+      "size": 32,
+      "status": "ok",
+      "latency_s": 0.3394,
+      "embed_s": 0.2195,
+      "generate_s": 0.12,
+      "runs_s": [
+        0.3389,
+        0.3394,
+        0.3412
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 7,
+      "answer": "He is afraid of the supernatural."
+    },
+    {
+      "series": "memorilla",
+      "size": 64,
+      "status": "ok",
+      "latency_s": 0.5351,
+      "embed_s": 0.4129,
+      "generate_s": 0.1211,
+      "runs_s": [
+        0.5351,
+        0.5408,
+        0.5329
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 7,
+      "answer": "He is afraid of the supernatural."
+    },
+    {
+      "series": "memorilla",
+      "size": 128,
+      "status": "ok",
+      "latency_s": 0.9285,
+      "embed_s": 0.8038,
+      "generate_s": 0.1222,
+      "runs_s": [
+        0.932,
+        0.9285,
+        0.923
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 7,
+      "answer": "He is afraid of the supernatural."
+    },
+    {
+      "series": "memorilla",
+      "size": 256,
+      "status": "ok",
+      "latency_s": 1.7114,
+      "embed_s": 1.5906,
+      "generate_s": 0.1207,
+      "runs_s": [
+        1.7114,
+        1.7098,
+        1.7132
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 7,
+      "answer": "He is afraid of the supernatural."
+    },
+    {
+      "series": "memorilla",
+      "size": 512,
+      "status": "ok",
+      "latency_s": 3.3103,
+      "embed_s": 3.1894,
+      "generate_s": 0.1204,
+      "runs_s": [
+        3.2902,
+        3.6917,
+        3.3103
+      ],
+      "prompt_tokens": 75,
+      "output_tokens": 7,
+      "answer": "He is afraid of the supernatural."
+    }
+  ],
+  "phases": [
+    {
+      "phase": "native window",
+      "seconds": 49.3
+    },
+    {
+      "phase": "YaRN x4.0",
+      "seconds": 46.6
+    },
+    {
+      "phase": "memorilla",
+      "seconds": 79.4,
+      "load": {
+        "stages_s": {
+          "files": 0.23,
+          "memory_module": 1.63,
+          "encoder": 18.41,
+          "decoder": 59.1
+        },
+        "checkpoint": "stage3",
+        "num_memories": 16,
+        "kv_cache_tokens": {
+          "decoder": 223968,
+          "encoder": null
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "vram": {
+    "total_mib": 81559,
+    "baseline_used_mib": 483,
+    "peak_used_mib": 72347,
+    "peak_demo_mib": 71864,
+    "other_processes_mib": 0
+  }
+}
